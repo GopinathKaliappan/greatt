@@ -1,0 +1,48 @@
+<ion-view view-title="MEME Collections">
+
+
+    <ion-content >
+<br><br>    
+<div class="list list-inset">
+  <label class="item item-input">
+    <i class="icon ion-search placeholder-icon"></i>
+    <input type="text" ng-model="search"  ng-change="filt(search)" ng-model-options="{ debounce: 500 }" placeholder="Search Your Meme">
+  </label>
+</div>
+<div class="list">
+
+
+  <label class="item item-input item-select dark">
+    <div class="input-label">
+ Choose Your MEME Type
+    </div>
+<select name="repeatSelect" id="repeatSelect" ng-model="data.model" ng-change="aaa(data.model)">
+      <option ng-repeat="mt in my |  unique: 'type'" value="{{mt.type}}">{{mt.type}}</option>
+    </select>
+  </label>
+
+</div>
+
+
+
+
+     <div ng-repeat="m in myimg ">  
+  
+          <div class="list card">
+
+
+  <div class="item item-body">
+    <img  class="full-image"  ng-src="{{m.url}}">
+      <div class="list">
+
+  <a class="item item-icon-left" >
+
+    <i class="icon ion-share"></i>
+    Share
+  </a></p> <i ng-click="share(m.url)" class="icon ion-share">See image</i>
+  </div>
+
+</div>
+       </div>
+   </ion-content>
+</ion-view>

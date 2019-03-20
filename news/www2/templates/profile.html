@@ -1,0 +1,21 @@
+<ion-view view-title="Profile">
+    <ion-content ng-class="{expanded:$scope.isExpanded}">
+        <div class="hero slide-up" style="background-image: url('img/profile-bg.jpg');">
+            <div class="content">
+                <div class="avatar" style="background-image: url('img/daenerys.jpg');"></div>
+                <h2>{{myname}}</h2>
+                <h3><a class="light"></a></h3>
+                <h4></h4>
+            </div>
+        </div>
+        <div class="tabs tabs-dark tabs-icon-top static">
+            <a ui-sref="app.activity" class="tab-item">
+                <i class="icon ion-arrow-graph-up-right"></i> Crete MEME
+            </a>
+
+            <a ui-sref="app.gallery" class="tab-item">
+                <i class="icon ion-images"></i>  Today's Top MEME's 
+            </a>
+        </div>
+           </ion-content>
+</ion-view>

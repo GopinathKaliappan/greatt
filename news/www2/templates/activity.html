@@ -1,0 +1,51 @@
+<ion-view view-title="Create Your MEME" >
+
+    <ion-content  ng-controller="ActivityCtrl" >
+
+        <div class="item card-item">
+            <div class="card stable-bg ink ink-dark">
+
+<div ng-click="pick()" class="bar bar-header bar-assertive">
+  <h1 class="title"> <i class="ion-image positive" ></i>&nbsp;Click Here to Pick Image</h1>
+</div>
+<br>
+
+<br>
+
+<div class="list list-inset">
+  <label class="item item-input">
+    <i class="icon ion-android-checkbox-outline assertive placeholder-icon"></i>
+<input type='text'  id='top-text' placeholder="Top Text" />
+  </label> 
+</div>
+
+<center>
+<canvas id="memecanvas" style="height:250px">
+  Sorry, canvas not supported
+</canvas>
+</center>
+
+
+
+<img id="start-image" ng-hide="true"  ng-src="{{results}}" alt="" />
+
+<div class="list list-inset">
+  <label class="item item-input">
+    <i class="icon ion-android-checkbox-outline balanced placeholder-icon"></i>
+
+<input type='text'  id='bottom-text'  placeholder="Bottom Text"  />
+
+  </label>
+</div>
+
+        </div>
+
+   
+<div class="item item-button-right" ng-click="shareanywhere()">
+    Share
+    <button class="button button-positive" >
+      <i class="icon ion-share balanced"></i>
+    </button>
+  </div>
+    </ion-content>
+</ion-view>
