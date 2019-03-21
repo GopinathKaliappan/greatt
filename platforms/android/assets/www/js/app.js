@@ -4,7 +4,7 @@
  //    return src;
  // } 
 
- var getImage = function (string, img)  {
+ var getImage = function (string)  {
 
     var elem= document.createElement("div");
     elem.innerHTML = string;
@@ -13,7 +13,7 @@
     try {
       return images[0].src;    
     } catch(e) {
-       return img;
+       return '';
     }
 
  }
@@ -97,22 +97,31 @@ var app = angular.module('slidebox', ['ionic', 'tabSlideBox','ngCordova', 'xml',
 
 app.controller("FeedController", function($http, $scope,$timeout,$ionicPlatform,$cordovaSocialSharing) {
   
- 
-  let parser = new RSSParser();
 
+        $scope.pageCount = 1;
+        $scope.loadMore = () => {
+            $scope.pageCount = Number($scope.pageCount) + 1;
+        } 
+
+ // $scope.checkStatus = (currentIndex) => {
+ //  return $scope.count <= currentIndex
+ // }
+  let parser = new RSSParser();
+  $scope.entries = [];
+  $scope.api = 'https://agaramnews.herokuapp.com?url=';
+  $scope.pagination = '&page=0count=20';
   $scope.apiKey = '&api_key=hpi0ghvdfyy5xbbiwuruga2i6p49cnf0jilgt3dg';
   $scope.count = '&count=100';
   $scope.corsProxy = "https://api.rss2json.com/v1/api.json?rss_url=";
   const CORS_PROXY = "https://cors-anywhere.herokuapp.com/";
   $scope.currentIndex = 1;
-  $scope.data = [];
-
+  $scope.currentItems = [];
   $scope.tabs = [
     {
         name: 'India',
         url: 'https://www.news18.com/rss/india.xml',
         icon: '',
-        color: '#FF5733',
+        color: 'purple',
         text: 'white'
     },
     {
@@ -129,7 +138,13 @@ app.controller("FeedController", function($http, $scope,$timeout,$ionicPlatform,
         color: '#900C3F',
         text: 'white'
     },
-
+     {
+        name: 'BBC Music',
+        url: 'http://www.bbc.co.uk/music/genres/classical/reviews.rss',
+        icon: '',
+        color: '#581845',
+        text: 'white'
+    },
 
     {
         name: 'Life Style',
@@ -140,7 +155,7 @@ app.controller("FeedController", function($http, $scope,$timeout,$ionicPlatform,
     },
     {
         name: 'Fashion',
-        url: 'https://www.thehindu.com/life-and-style/fashion/feeder/default.rss',
+        url: 'https://www.huffpost.com/section/business/feed',
         icon: '',
         color: '#4A235A',
         text: 'white'
@@ -153,28 +168,18 @@ app.controller("FeedController", function($http, $scope,$timeout,$ionicPlatform,
         text: 'white'
     },
         {
-        name: 'Samayam Tamil',
-        url: 'https://tamil.samayam.com/rssfeedstopstories.cms',
+        name: '',
+        url: 'https://www.news18.com/rss/movies.xml',
         icon: '',
-        color: '#4A235A',
+        color: 'grey',
         text: 'white'
     }
   ];
-  parser.parseURL(CORS_PROXY + 'https://www.news18.com/rss/south-cinema.xml', function(err, feed) {
-
-  var data = [];
-  feed.items.forEach(function(entry) {
-    // console.log(entry.title + ':' + entry.link);
-      entry.img = getImage(entry);
-      data.push(entry);  
-
-   })
-  })
+          
             $scope.onSlideMove = (dataId) => {
-                let timer = setTimeout(()=> {
-                    $scope.data = [];
-                    $scope.loadData(dataId);
-                }, 200); 
+                  //count = 0;
+                  $scope.pageCount = 1;
+                  $scope.loadData(dataId);  
             };
 
 
@@ -182,33 +187,36 @@ app.controller("FeedController", function($http, $scope,$timeout,$ionicPlatform,
                             $scope.currentIndex = dataId.index;
               if(window.localStorage.getItem(dataId.index) !== null ) {
                          // window.localStorage[dataId.index] = JSON.stringify($scope.data[dataId.index]);
-                                               
-                          $scope.data.map((data, i) => {
-                             if( i == dataId.index) {
-                                $scope.$apply( () => {
-                                         $scope.data[dataId.index] = JSON.parse(window.localStorage.getItem(dataId.index));        
-                                });
-                             } else {
-                                $scope.data[i] = [];
-                             }
-                          })
+                             $scope.data[dataId.index] = JSON.parse(window.localStorage.getItem(dataId.index));                             
+                          // $scope.data.map((data, i) => {
+                          //    if( i == dataId.index) {
+                          //       $scope.$apply( () => {
+                          //          $scope.data[dataId.index] = JSON.parse(window.localStorage.getItem(dataId.index));        
+                          //       });
+                          //    } else {
+                          //       $scope.data[i] = [];
+                          //    }
+                          // })
               }
-                
-              fetch($scope.corsProxy + $scope.tabs[dataId.index].url + $scope.apiKey + $scope.count).then((res)=> res.json()).then((result) =>{
+
+
+  
+              fetch($scope.api + $scope.tabs[dataId.index].url + $scope.pagination).then((res)=> res.json()).then((result) =>{
                  
               
 
 
                  //console.log(feed.title);
                  var data = [];
-                 let { items = [] } = result;
+                 let items  = result.rss.channel.item;
                  items.forEach(function( entry, i) {
                 // console.log(entry.title + ':' + entry.link);
-                     entry.img = getImage(entry.content, result.feed.image);
+                     entry.img = getImage(entry.description._cdata = entry.description._cdata);
                      data.push(entry);
-                 
+                        
                 
                  })
+
                  $scope.$apply( () => {
                     $scope.data[dataId.index]=data; 
 
@@ -224,7 +232,12 @@ app.controller("FeedController", function($http, $scope,$timeout,$ionicPlatform,
                  // window.localStorage['india']=angular.toJson($scope.india);
                })                   
             }
+try {
 
+   $scope.data = [];
+} catch(e) {
+
+}
 
 
 
@@ -240,48 +253,10 @@ $scope.sharenews=function(play,subject,link){
     });
 }
 
-    $scope.callAtTimeout = function() {
-        
-       
-   
- $ionicPlatform.ready(function() {
-
-    if( ionic.Platform.isAndroid() )  { 
-
-   admobid = { // for Android
-      banner: 'ca-app-pub-4160184650581064/7164351033' // Change this to your Ad Unit Id for banner...
-   };
 
 
 
-   if(window.admob) 
-      AdMob.createBanner( {
-         adId:admobid.banner, 
-         position:AdMob.AD_POSITION.BOTTOM_CENTER, 
-         autoShow:true
-      } );
-}
 
-});
-}
-
-
-$timeout( function(){
-    $scope.callAtTimeout(); 
-}, 7000);
-
-
-
-setTimeout(function(){
-
-$scope.$apply(function(){
-
-    
-
-$scope.dclass='card-5';
-})
-
-},2000)
 
 
 
@@ -289,83 +264,8 @@ $scope.dclass='card-5';
 
 $scope.viewnews=function(link)
 {
-window.open(link, '_blank', 'location=no','hardwareback=no','clearcache=yes');
-    }
-    $scope.init = function() {
-
-
-        try 
-        {
-
-
-
-$scope.data.india=angular.fromJson(window.localStorage['india']);           
-           
-$scope.data.hindunews=angular.fromJson(window.localStorage['hindunews']);
-
-$('#yourElement').animateCss('rollIn');
-        
-
-        }
-
-        catch(e)
-        {
-
-        }
-        //$http.get("http://ajax.googleapis.com/ajax/services/feed/load", { params: { "v": "1.0","num":"40", "q": "http://feeds.feedburner.com/dinamalar/Front_page_news" } })
-
-
-try
-{
-
-parser.parseURL(CORS_PROXY + 'https://www.news18.com/rss/south-cinema.xml', function(err, feed) {
-  console.log(feed.title);
-  var data = [];
-  feed.items.forEach(function(entry) {
-    // console.log(entry.title + ':' + entry.link);
-      entry.img = getImage(entry);
-      data.push(entry);  
-    
-  })
-  $scope.data.india=data;
-  window.localStorage['india']=angular.toJson($scope.india);
-})
-
-parser.parseURL(CORS_PROXY + 'http://cinema.dinamalar.com/rss.php', function(err, feed) {
-  console.log(feed.title);
-  var data = [];
-  feed.items.forEach(function(entry) {
-    // console.log(entry.title + ':' + entry.link);
-      entry.img = getImage(entry);
-      data.push(entry);  
-    
-  })
-    $scope.data.tamil=data;
-    window.localStorage['con']=angular.toJson($scope.con);
-})
-
-parser.parseURL(CORS_PROXY + 'http://feeds.feedburner.com/Vikatan_India_News', function(err, feed) {
-  console.log(feed.title);
-  var data = [];
-  feed.items.forEach(function(entry) {
-    // console.log(entry.title + ':' + entry.link);
-      entry.img = getImage(entry);
-      data.push(entry);  
-    
-  })
-    $scope.data.hindunews=data;
-    window.localStorage['hindunews']=angular.toJson($scope.con);
-})
-
-
-        }
-        catch(e)
-        {
-            
-        }
-
-
-    }
+    window.open(link, '_blank', 'location=no','hardwareback=no','clearcache=yes');
+}
 // $scope.init();
 
 
@@ -374,4 +274,14 @@ parser.parseURL(CORS_PROXY + 'http://feeds.feedburner.com/Vikatan_India_News', f
 
 
 
+});
+app.directive('imageonload', function() {
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs) {
+            element.bind('load', function() {
+                
+            });
+        }
+    };
 });

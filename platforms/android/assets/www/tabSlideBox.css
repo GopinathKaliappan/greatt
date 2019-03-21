@@ -17,7 +17,7 @@ body{
     background-color: #fff;
     text-align: center;
     font-weight: 300;
-    background-color: #0398dc;
+    /*background-color: #0398dc;*/
 }
 
 .tabbed-slidebox .tsb-icons {
@@ -43,8 +43,8 @@ body{
 
 .tabbed-slidebox .tsb-icons a {
     display: inline-block;
-    width: 54px;
-    font-size: 2.5em;
+    /*width: 54px;*/
+    /*font-size: 2.5em;*/
     color: rgba(0, 0, 0, 0.3);
   /*-webkit-transform:translate3d(0,8px,0);*/
 }
@@ -223,22 +223,24 @@ height:100%;
 
 .tabbed-slidebox .tsb-icons a {
     padding: 10px;
+    white-space: nowrap;
     color: black !important ;
     display: inline-block;
-    width: 54px;
-    font-size: 2.5em;
+    /*width: 54px;*/
+    /*font-size: 2.5em;*/
+    text-decoration: none;
     color: rgba(247, 9, 62, 0.3);
     -webkit-transform: translate3d(0,8px,0);
 }
 .tabbed-slidebox .tsb-icons a.active {
     /*color: rgb(39, 132, 85);*/
    color: #ce1841 !important;   
-    font-size: 3.5em;
+    /*font-size: 3.5em;*/
     /*-webkit-transform: translate3d(0,0,0);*/
 }
 .tabbed-slidebox .tsb-icons a.active:after {
-    /*color: rgb(39, 132, 85);*/
-    /*display: none;
+    color: rgb(39, 132, 85);
+    display: none;
     width: 0;
     height: 0;
     border-style: solid;
@@ -249,7 +251,7 @@ height:100%;
     display: block;
     bottom: -12px;
     left: 50%;
-    margin-left: -14px;*/
+    margin-left: -14px;
 }
 
 .aaa img{
@@ -377,4 +379,8 @@ p img
     text-align: center;
     text-overflow: ellipsis;
     white-space: nowrap;
+}
+.scroll-content {
+
+        margin-bottom: 10px 
 }

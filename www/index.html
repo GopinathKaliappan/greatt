@@ -73,17 +73,12 @@
 			    	<div class="tsb-icons " >
 			    		<div class="tsb-ic-wrp">
 		
-    <ion-scroll direction="x" class="tsb-hscroll" >
+    <!-- <ion-scroll direction="x" class="tsb-hscroll" > -->
 <!--                 <a href="javascript:;" class="{{tab.icon}}" ng-repeat="tab in tabs" on-finish-render="test()">{{tab.name}}</a> -->
                                 <a href="javascript:;" style="background-color: {{tab.color}}; color: {{tab.text}} !important; border-bottom: 5px solid {{tabs[currentIndex].color}};" ng-repeat="tab in tabs"  on-finish-render="test()" >{{tab.name}}&nbsp;
-                                <div ng-if="currentIndex === $index" style="
-                                        width: 10px;
-                                        display: inline-block;
-                                        border-radius: 50%;
-                                        background: #87dc87;
-                                "> <span style="visibility:hidden">s</span></div>
+                                
                                 </a>
-              </ion-scroll>	    		
+              <!-- </ion-scroll>	    		 -->
 <!-- 
   							<a href="javascript:;" class="ion-planet"></a>
   							<a href="javascript:;" class="ion-leaf"></a>
@@ -94,30 +89,41 @@
 			        <ion-slide-box  show-pager="false" on-slide-changed="slideHasChanged($index)">
 
 
-                  <ion-slide ng-repeat="tab in tabs">                      
+                  <ion-slide ng-repeat="tab in tabs" ng-init="parentIndex=$index">                      
                     <ion-content style="background-color: white;"  overflow-scroll="    true" has-bouncing="true">
                             <!-- <h5>{{tab.name}}</h5> -->
       
-  <ion-list class="custom-column">  
+  <div class="custom-column" >  
 
-        <ion-item  ng-repeat="entry in data[$index]"  class="col col-xs-3 col-sm-3 col-md-3 col-lg-3 custom-column common-border common-divider" >
+        <div  
+            ng-repeat="entry in data[parentIndex];" 
+            ng-init="childIndex=$index" 
+            ng-if="$index <= (pageCount * 20)"      
+            class="col col-xs-3 col-sm-3 col-md-3 col-lg-3 common-border custom-column common-divider" 
+        >
+              
             <div class="image-divider">
-                <img ng-src="{{entry.img || entry.enclosure._attributes.url }}" width="100%" width="100px"/>
+                <img ng-src="{{entry.img || entry.enclosure._attributes.url }}" style="width: 100%" imageonload/>
             </div>
             <div class="text-limit-2 font-medium">
                  {{entry.title._cdata || entry.title._text}}
             </div>
-         
-        </ion-item>
+            
+        </div>
+       
 
+ <ion-item ng-if="data[$index]" ng-click="loadMore()" style="margin-bottom: 80px">Load More
+            </ion-item>
+  </div>
+   
+</ion-content>
+</ion-slide>
 
-  </ion-list>
+            </tab-slide-box>
 
- <ion-infinite-scroll on-infinite="loadMore()"  distance="1%"></ion-infinite-scroll>
- 
 </ion-content>  
 
-                  </ion-slide>
+                  
 
       </ion-view>
     

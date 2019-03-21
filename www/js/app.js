@@ -98,20 +98,16 @@ var app = angular.module('slidebox', ['ionic', 'tabSlideBox','ngCordova', 'xml',
 app.controller("FeedController", function($http, $scope,$timeout,$ionicPlatform,$cordovaSocialSharing) {
   
 
-        let count = 1;
+        $scope.pageCount = 1;
         $scope.loadMore = () => {
-          count += 1;
-          if(count < 20) {
-
-              $scope.$broadcast('scroll.infiniteScrollComplete');  
-          }  else {
-            alert("Completed");
-          }
+            $scope.pageCount = Number($scope.pageCount) + 1;
         } 
-         
 
-
+ // $scope.checkStatus = (currentIndex) => {
+ //  return $scope.count <= currentIndex
+ // }
   let parser = new RSSParser();
+  $scope.entries = [];
   $scope.api = 'https://agaramnews.herokuapp.com?url=';
   $scope.pagination = '&page=0count=20';
   $scope.apiKey = '&api_key=hpi0ghvdfyy5xbbiwuruga2i6p49cnf0jilgt3dg';
@@ -181,7 +177,8 @@ app.controller("FeedController", function($http, $scope,$timeout,$ionicPlatform,
   ];
           
             $scope.onSlideMove = (dataId) => {
-                  count = 0;
+                  //count = 0;
+                  $scope.pageCount = 1;
                   $scope.loadData(dataId);  
             };
 
@@ -190,16 +187,16 @@ app.controller("FeedController", function($http, $scope,$timeout,$ionicPlatform,
                             $scope.currentIndex = dataId.index;
               if(window.localStorage.getItem(dataId.index) !== null ) {
                          // window.localStorage[dataId.index] = JSON.stringify($scope.data[dataId.index]);
-                                               
-                          $scope.data.map((data, i) => {
-                             if( i == dataId.index) {
-                                $scope.$apply( () => {
-                                   $scope.data[dataId.index] = JSON.parse(window.localStorage.getItem(dataId.index));        
-                                });
-                             } else {
-                                $scope.data[i] = [];
-                             }
-                          })
+                             $scope.data[dataId.index] = JSON.parse(window.localStorage.getItem(dataId.index));                             
+                          // $scope.data.map((data, i) => {
+                          //    if( i == dataId.index) {
+                          //       $scope.$apply( () => {
+                          //          $scope.data[dataId.index] = JSON.parse(window.localStorage.getItem(dataId.index));        
+                          //       });
+                          //    } else {
+                          //       $scope.data[i] = [];
+                          //    }
+                          // })
               }
 
 
@@ -216,9 +213,10 @@ app.controller("FeedController", function($http, $scope,$timeout,$ionicPlatform,
                 // console.log(entry.title + ':' + entry.link);
                      entry.img = getImage(entry.description._cdata = entry.description._cdata);
                      data.push(entry);
-                 
+                        
                 
                  })
+
                  $scope.$apply( () => {
                     $scope.data[dataId.index]=data; 
 
@@ -255,48 +253,10 @@ $scope.sharenews=function(play,subject,link){
     });
 }
 
-    $scope.callAtTimeout = function() {
-        
-       
-   
- $ionicPlatform.ready(function() {
-
-//     if( ionic.Platform.isAndroid() )  { 
-
-//    admobid = { // for Android
-//       banner: 'ca-app-pub-4160184650581064/7164351033' // Change this to your Ad Unit Id for banner...
-//    };
 
 
 
-//    if(window.admob) 
-//       AdMob.createBanner( {
-//          adId:admobid.banner, 
-//          position:AdMob.AD_POSITION.BOTTOM_CENTER, 
-//          autoShow:true
-//       } );
-// }
 
-});
-}
-
-
-$timeout( function(){
-    $scope.callAtTimeout(); 
-}, 7000);
-
-
-
-setTimeout(function(){
-
-$scope.$apply(function(){
-
-    
-
-$scope.dclass='card-5';
-})
-
-},2000)
 
 
 
@@ -304,83 +264,8 @@ $scope.dclass='card-5';
 
 $scope.viewnews=function(link)
 {
-window.open(link, '_blank', 'location=no','hardwareback=no','clearcache=yes');
-    }
-    $scope.init = function() {
-
-
-        try 
-        {
-
-
-
-$scope.data.india=angular.fromJson(window.localStorage['india']);           
-           
-$scope.data.hindunews=angular.fromJson(window.localStorage['hindunews']);
-
-$('#yourElement').animateCss('rollIn');
-        
-
-        }
-
-        catch(e)
-        {
-
-        }
-        //$http.get("http://ajax.googleapis.com/ajax/services/feed/load", { params: { "v": "1.0","num":"40", "q": "http://feeds.feedburner.com/dinamalar/Front_page_news" } })
-
-
-try
-{
-
-parser.parseURL(CORS_PROXY + 'https://www.news18.com/rss/south-cinema.xml', function(err, feed) {
-  console.log(feed.title);
-  var data = [];
-  feed.items.forEach(function(entry) {
-    // console.log(entry.title + ':' + entry.link);
-      entry.img = getImage(entry);
-      data.push(entry);  
-    
-  })
-  $scope.data.india=data;
-  window.localStorage['india']=angular.toJson($scope.india);
-})
-
-parser.parseURL(CORS_PROXY + 'http://cinema.dinamalar.com/rss.php', function(err, feed) {
-  console.log(feed.title);
-  var data = [];
-  feed.items.forEach(function(entry) {
-    // console.log(entry.title + ':' + entry.link);
-      entry.img = getImage(entry);
-      data.push(entry);  
-    
-  })
-    $scope.data.tamil=data;
-    window.localStorage['con']=angular.toJson($scope.con);
-})
-
-parser.parseURL(CORS_PROXY + 'http://feeds.feedburner.com/Vikatan_India_News', function(err, feed) {
-  console.log(feed.title);
-  var data = [];
-  feed.items.forEach(function(entry) {
-    // console.log(entry.title + ':' + entry.link);
-      entry.img = getImage(entry);
-      data.push(entry);  
-    
-  })
-    $scope.data.hindunews=data;
-    window.localStorage['hindunews']=angular.toJson($scope.con);
-})
-
-
-        }
-        catch(e)
-        {
-            
-        }
-
-
-    }
+    window.open(link, '_blank', 'location=no','hardwareback=no','clearcache=yes');
+}
 // $scope.init();
 
 
@@ -389,4 +274,14 @@ parser.parseURL(CORS_PROXY + 'http://feeds.feedburner.com/Vikatan_India_News', f
 
 
 
+});
+app.directive('imageonload', function() {
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs) {
+            element.bind('load', function() {
+                
+            });
+        }
+    };
 });
