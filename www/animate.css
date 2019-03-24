@@ -3358,6 +3358,15 @@ body {
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
 }
+.text-limit-4 {
+          max-height: 82px;
+        min-height: 83px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 4;
+        -webkit-box-orient: vertical;
+}
 .custom-column {
   padding: 5px !important;
   margin: 0px !important; 

@@ -8,7 +8,7 @@
 
     <!-- ionic css -->
     <link href="lib/ionic/css/ionic.css" rel="stylesheet">
-
+<!-- <link href="https://unpkg.com/ionicons@4.5.5/dist/css/ionicons.min.css" rel="stylesheet"> -->
     <!-- your app's css -->
     <link href="tabSlideBox.css" rel="stylesheet">
     <link href="animate.css" rel="stylesheet">
@@ -68,16 +68,21 @@
 	
 	<script id="index.html" type="text/ng-template">
       <ion-view title="Tabbed Slide box" hide-nav-bar="true">
-        <ion-content ng-controller="FeedController" scroll="false" overflow-scroll="true">
+        <ion-content  ng-controller="FeedController" scroll="false" overflow-scroll="true" has-bouncing="true">
           	<tab-slide-box tab="0" >
 			    	<div class="tsb-icons " >
 			    		<div class="tsb-ic-wrp">
+                  <div  ng-click="showPopup()" class="add-new">Add New Channel&nbsp;
+                                
+                                </div>
 		
     <!-- <ion-scroll direction="x" class="tsb-hscroll" > -->
 <!--                 <a href="javascript:;" class="{{tab.icon}}" ng-repeat="tab in tabs" on-finish-render="test()">{{tab.name}}</a> -->
-                                <a href="javascript:;" style="background-color: {{tab.color}}; color: {{tab.text}} !important; border-bottom: 5px solid {{tabs[currentIndex].color}};" ng-repeat="tab in tabs"  on-finish-render="test()" >{{tab.name}}&nbsp;
+                                
+                                <a href="javascript:;" class="shadow" style="background-color: {{tab.color}}; color: {{tab.text}} !important;" ng-repeat="tab in tabs"  on-finish-render="test()" >{{tab.name}}&nbsp;
                                 
                                 </a>
+                              
               <!-- </ion-scroll>	    		 -->
 <!-- 
   							<a href="javascript:;" class="ion-planet"></a>
@@ -87,36 +92,62 @@
 					</div>
 			    	</div>
 			        <ion-slide-box  show-pager="false" on-slide-changed="slideHasChanged($index)">
+                  
+                  <ion-slide ng-repeat="tab in tabs" ng-init="parentIndex=$index">   
 
+                  <ion-view>                   
+                    <ion-content  style="background-color: white;"  overflow-scroll="    true" has-bouncing="true">
 
-                  <ion-slide ng-repeat="tab in tabs" ng-init="parentIndex=$index">                      
-                    <ion-content style="background-color: white;"  overflow-scroll="    true" has-bouncing="true">
                             <!-- <h5>{{tab.name}}</h5> -->
       
   <div class="custom-column" >  
-
+        
         <div  
-            ng-repeat="entry in data[parentIndex];" 
+            ng-repeat="entry in data[tab.id];" 
             ng-init="childIndex=$index" 
-            ng-if="$index <= (pageCount * 20)"      
-            class="col col-xs-3 col-sm-3 col-md-3 col-lg-3 common-border custom-column common-divider" 
+            ng-if="$index <= (pageCount * 15)"      
+            class="col col-xs-3 col-sm-3 col-md-3 col-lg-3 common-border custom-column common-divider"
+            ng-click="viewnews(entry.link)" 
         >
               
             <div class="image-divider">
                 <img ng-src="{{entry.img || entry.enclosure._attributes.url }}" style="width: 100%" imageonload/>
             </div>
-            <div class="text-limit-2 font-medium">
+            <div class="text-limit-4 font-medium text-align-left">
                  {{entry.title._cdata || entry.title._text}}
+                 
+                     
             </div>
-            
-        </div>
-       
+<!--             <div class="bottom-container-left">
+               <div  class="read-news" ng-click="viewnews(entry.link._cdata)">Read news</div>
+               <div  class="copyright">{{entry.copyright._text}}</div>
+            </div> -->
+           <!--  <div class="bottom-container-right">
+          
+               <i ng-click="shareWhatsapp(entry.title._cdata, entry.img, entry.link._cdata)" class="icon ion-logo-whatsapp icon-common green" ></i>
+               <i ng-click="shareFacebook(entry.title._cdata, entry.img, entry.link._cdata)" class="icon ion-logo-facebook icon-common blue" ></i>
+               <i ng-click="sharenews(entry.title._cdata, entry.img, entry.link._cdata )" class="icon ion-share icon-common red" ></i>
+             </div> -->
+             
 
- <ion-item ng-if="data[$index]" ng-click="loadMore()" style="margin-bottom: 80px">Load More
-            </ion-item>
-  </div>
-   
+              
+            </div> 
+     
+
+        </div>
+   <ion-item   class="load-more">
+    <span ng-click="loadMore()" ng-if="pageCount*15 <= data[currentIndex].length"> Load More Updates</span>
+    <span ng-if="pageCount*15 >= data[currentIndex].length"> No more data stay tunned
+        <div style="margin-top: 50px">
+            <img src="https://qrs.in/frontent/images/noresult.png" style="width: 70%" />
+        </div>
+    </span>
+<!--  {{ pageCount*20 <= data[currentIndex].length ? 'Load More Updates' : 'No more data stay tunned'}}   -->
+            </ion-item> 
 </ion-content>
+
+    </ion-view>
+
 </ion-slide>
 
             </tab-slide-box>
