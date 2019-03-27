@@ -77,6 +77,14 @@ module.exports = [
         "id": "cordova-plugin-x-toast.tests",
         "file": "plugins/cordova-plugin-x-toast/test/tests.js",
         "pluginId": "cordova-plugin-x-toast"
+    },
+    {
+        "id": "cordova-plugin-themeablebrowser.themeablebrowser",
+        "file": "plugins/cordova-plugin-themeablebrowser/www/themeablebrowser.js",
+        "pluginId": "cordova-plugin-themeablebrowser",
+        "clobbers": [
+            "cordova.ThemeableBrowser"
+        ]
     }
 ];
 module.exports.metadata = 
@@ -93,7 +101,8 @@ module.exports.metadata =
     "cordova-plugin-statusbar": "2.1.3",
     "cordova-plugin-whitelist": "1.2.2",
     "cordova-plugin-x-socialsharing": "5.1.3",
-    "cordova-plugin-x-toast": "2.5.2"
+    "cordova-plugin-x-toast": "2.5.2",
+    "cordova-plugin-themeablebrowser": "0.2.17"
 };
 // BOTTOM OF METADATA
 });

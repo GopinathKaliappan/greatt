@@ -11,6 +11,8 @@
 
     var images = elem.getElementsByTagName("img");
     try {
+      var img = new Image();
+      img.src = images[0].src;
       return images[0].src;    
     } catch(e) {
        return '';
@@ -93,10 +95,135 @@ var app = angular.module('slidebox', ['ionic', 'tabSlideBox','ngCordova', 'xml',
       };  
         }
         ])
+app.controller("Livetabs", function($http, $scope,$timeout,$ionicPlatform,$cordovaSocialSharing,$ionicSlideBoxDelegate, $ionicPopup, $cordovaInAppBrowser, $ionicLoading) {
 
-app.controller("FeedController", function($http, $scope,$timeout,$ionicPlatform,$cordovaSocialSharing,$ionicSlideBoxDelegate) {
+$scope.viewlistnews=function(link)
+{
+  // $ionicLoading.show({ template: 'Loading ...'});
+  // setTimeout(()=> {
+  //   $ionicLoading.hide();
+
+  //   $cordovaInAppBrowser.open(link[Object.keys(link)[0]], '_blank')
+  //     .then(function(event) {
+  //         // success
+  //     })
+  //     .catch(function(event) {
+    
+  //       // error
+  // });
+  // }, 1000)  
   
+cordova.ThemeableBrowser.open(link, '_blank', {
+    statusbar: {
+        color: '#ffffffff'
+    },
+    toolbar: {
+        height: 44,
+        color: '#f0f0f0ff'
+    },
+    title: {
+        color: '#003264ff',
+        showPageTitle: true
+    },
+    // backButton: {
+    //     wwwImage: 'img/back.png',
+    //     imagePressed: 'back_pressed',
+    //     align: 'left',
+    //     event: 'backPressed'
+    // },
+    closeButton: {
+        wwwImage: 'img/back.png',
+        imagePressed: 'close_pressed',
+        align: 'left',
+        event: 'closePressed'
+    },
+    // customButtons: [
+    //     {
+    //         wwwImage: 'img/share.svg.jpg',
+    //         imagePressed: 'share_pressed',
+    //         align: 'right',
+    //         event: 'sharePressed'
+    //     }
+    // ],
+    // menu: {
+    //     wwwImage: 'img/menu.svg.jpg',
+    //     imagePressed: 'menu_pressed',
+    //     title: 'Test',
+    //     cancel: 'Cancel',
+    //     align: 'right',
+    //     items: [
+    //         {
+    //             event: 'helloPressed',
+    //             label: 'Hello World!'
+    //         },
+    //         {
+    //             event: 'testPressed',
+    //             label: 'Test!'
+    //         }
+    //     ]
+    // },
+    backButtonCanClose: true
+}).addEventListener('backPressed', function(e) {
+    // alert('back pressed');
+}).addEventListener('helloPressed', function(e) {
+    // alert('hello pressed');
+}).addEventListener('sharePressed', function(e) {
+    // $scope.sharenews(e);
+}).addEventListener(cordova.ThemeableBrowser.EVT_ERR, function(e) {
+    console.error(e.message);
+}).addEventListener(cordova.ThemeableBrowser.EVT_WRN, function(e) {
+    console.log(e.message);
+});
 
+}
+$scope.liveApi = 'https://agaramnews.herokuapp.com/livetabs'
+  $scope.loadLive = (dataId) => {
+              if(window.localStorage.getItem('liveTabs') !== undefined) {
+                     $scope.liveTabs = JSON.parse(window.localStorage.getItem('liveTabs'));
+              
+              }
+              fetch($scope.liveApi).then((res)=> res.json()).then((result) =>{
+                 
+                 $scope.$apply( () => {
+                    $scope.liveTabs=result; 
+
+                 })
+                 if($scope.liveTabs) {
+
+                      window.localStorage.setItem('liveTabs', JSON.stringify($scope.liveTabs));
+              
+                 }
+              })                   
+            }
+  $scope.loadLive()
+})
+app.controller("FeedController", function($http, $scope,$timeout,$ionicPlatform,$cordovaSocialSharing,$ionicSlideBoxDelegate, $ionicPopup, $cordovaInAppBrowser, $ionicLoading) {
+  
+document.addEventListener("deviceready", onDeviceReady, false);
+function onDeviceReady() {
+    window.open = cordova.InAppBrowser.open;
+}
+
+
+$ionicPlatform.ready(function() {
+
+    if( ionic.Platform.isAndroid() )  { 
+
+   // admobid = { // for Android
+   //    banner: 'ca-app-pub-4160184650581064/7164351033' // Change this to your Ad Unit Id for banner...
+   // };
+
+
+
+   // if(AdMob) 
+   //    AdMob.createBanner( {
+   //       adId:admobid.banner, 
+   //       position:AdMob.AD_POSITION.BOTTOM_CENTER, 
+   //       autoShow:true
+   //    } );
+}
+
+});
 
  // $scope.checkStatus = (currentIndex) => {
  //  return $scope.count <= currentIndex
@@ -117,6 +244,45 @@ app.controller("FeedController", function($http, $scope,$timeout,$ionicPlatform,
   $scope.currentIndex = 1;
   $scope.currentItems = [];
 
+            $scope.loadData = (dataId) => {
+
+              if(window.localStorage.getItem(dataId.index) !== null ) {
+                  $scope.data[$scope.tabs.filter(item => item.id === dataId.index)[0].id] = JSON.parse(window.localStorage.getItem($scope.tabs.filter(item => item.id === dataId.index)[0].id));                             
+              }  
+              fetch($scope.api + $scope.tabs.filter(item => item.id === dataId.index)[0].url).then((res)=> res.json()).then((result) =>{
+                 var data = [];
+                 let items  = result.rss.channel.item;
+                 try {
+                   items.forEach(function( entry, i) {
+                  // console.log(entry.title + ':' + entry.link);
+                       entry.img = getImage(entry.description._cdata = entry.description._cdata);
+                       data.push(entry);
+                          
+                  
+                   })
+                 } catch(e) {
+                     // fetch($scope.tabs[dataId.index].url,
+                     //  {headers : { 
+                     //        'Content-Type': 'application/json',
+                     //        'Accept': 'application/xml'
+                     //  }}).then(res=> res.json()).then((response)=>     {
+                     //      console.log(response);  
+                     // })
+
+
+                 }
+                 $scope.$apply( () => {
+                    $scope.data[$scope.tabs.filter(item => item.id === dataId.index)[0].id]=data; 
+
+                 })
+                 if($scope.data[dataId.index]) {
+
+                      window.localStorage.setItem($scope.tabs.filter(item => item.id === dataId.index)[0].id, JSON.stringify($scope.data[$scope.tabs.filter(item => item.id === dataId.index)[0].id]));
+              
+                 }
+              })                   
+            }
+  
   $scope.removeByKey = (array, params)=> {
     array.some((item, index)=> {
       return (array[index][params.key] === params.value) ? !!(array.splice(index, 1)) : false;
@@ -131,15 +297,18 @@ app.controller("FeedController", function($http, $scope,$timeout,$ionicPlatform,
           window.localStorage.setItem('tabs', JSON.stringify($scope.tabs));
            // $scope.currentIndex -= 1;  
         } else {
+   
+           window.localStorage.setItem(id, JSON.stringify([]));                      
            $scope.tabs = $scope.removeByKey($scope.tabs, { key: 'id', value: id })
            window.localStorage.setItem('tabs', JSON.stringify($scope.tabs));
            $scope.currentIndex += 0;
         }
         // $scope.tabs = $scope.removeByKey($scope.tabs, { key: 'id', value: id })
    }
-   // $scope.closePopup = () => {
-   //      $scope.myPopup.hide();
-   // } 
+   $scope.closePopup = () => {
+        $scope.myPopup.hide();
+   }
+
     $scope.showPopup = function() {
       $scope.data = {}
         fetch($scope.tabsApi).then((res)=> res.json()).then((response)=> {
@@ -188,11 +357,13 @@ app.controller("FeedController", function($http, $scope,$timeout,$ionicPlatform,
             $scope.$apply( () => {
               $scope.tabs = response;
               window.localStorage.setItem('tabs', JSON.stringify($scope.tabs));
+              // $scope.loadData({ index: $scope.tabs[0].id });  
             }) 
           }) 
       } else {
         
              $scope.tabs = JSON.parse(window.localStorage.getItem('tabs'));
+             // $scope.loadData({ index: $scope.tabs[0].id });
       }  
     }  
     
@@ -244,44 +415,6 @@ app.controller("FeedController", function($http, $scope,$timeout,$ionicPlatform,
             };
 
 
-            $scope.loadData = (dataId) => {
-
-              if(window.localStorage.getItem(dataId.index) !== null ) {
-                  $scope.data[$scope.tabs.filter(item => item.id === dataId.index)[0].id] = JSON.parse(window.localStorage.getItem($scope.tabs.filter(item => item.id === dataId.index)[0].id));                             
-              }  
-              fetch($scope.api + $scope.tabs.filter(item => item.id === dataId.index)[0].url).then((res)=> res.json()).then((result) =>{
-                 var data = [];
-                 let items  = result.rss.channel.item;
-                 try {
-                   items.forEach(function( entry, i) {
-                  // console.log(entry.title + ':' + entry.link);
-                       entry.img = getImage(entry.description._cdata = entry.description._cdata);
-                       data.push(entry);
-                          
-                  
-                   })
-                 } catch(e) {
-                     // fetch($scope.tabs[dataId.index].url,
-                     //  {headers : { 
-                     //        'Content-Type': 'application/json',
-                     //        'Accept': 'application/xml'
-                     //  }}).then(res=> res.json()).then((response)=>     {
-                     //      console.log(response);  
-                     // })
-
-
-                 }
-                 $scope.$apply( () => {
-                    $scope.data[$scope.tabs.filter(item => item.id === dataId.index)[0].id]=data; 
-
-                 })
-                 if($scope.data[dataId.index]) {
-
-                      window.localStorage.setItem($scope.tabs.filter(item => item.id === dataId.index)[0].id, JSON.stringify($scope.data[$scope.tabs.filter(item => item.id === dataId.index)[0].id]));
-              
-                 }
-              })                   
-            }
 try {
 
    $scope.data = [];
@@ -293,15 +426,22 @@ try {
 
 
 
-$scope.sharenews=function(play,subject,link){
- $cordovaSocialSharing
-    .share(play,suject, link) // Share via native share sheet
-    .then(function(result) {
+$scope.sharenews=function(message,subject,image = '', link){
 
+ $ionicLoading.show({template: 'Loading ...'}); 
+ $cordovaSocialSharing
+    .share(message, subject, image, link) // Share via native share sheet
+    .then(function(result) {
+      $ionicLoading.hide();
       // Success!
     }, function(err) {
+      $ionicLoading.hide();
       // An error occured. Show a message to the user
     });
+
+  setTimeout(()=> {
+    $ionicLoading.hide();
+  }, 3000);  
 }
 
 
@@ -332,11 +472,84 @@ $scope.shareFacebook = (message, image, link) => {
 
 $scope.viewnews=function(link)
 {
+  // $ionicLoading.show({ template: 'Loading ...'});
+  // setTimeout(()=> {
+  //   $ionicLoading.hide();
 
-    window.open(link[Object.keys(link)[0]], '_blank', 'location=no','hardwareback=no','clearcache=yes');
+  //   $cordovaInAppBrowser.open(link[Object.keys(link)[0]], '_blank')
+  //     .then(function(event) {
+  //         // success
+  //     })
+  //     .catch(function(event) {
+    
+  //       // error
+  // });
+  // }, 1000)  
+  
+cordova.ThemeableBrowser.open(link[Object.keys(link)[0]], '_blank', {
+    statusbar: {
+        color: '#ffffffff'
+    },
+    toolbar: {
+        height: 44,
+        color: '#f0f0f0ff'
+    },
+    title: {
+        color: '#003264ff',
+        showPageTitle: true
+    },
+    // backButton: {
+    //     wwwImage: 'img/back.png',
+    //     imagePressed: 'back_pressed',
+    //     align: 'left',
+    //     event: 'backPressed'
+    // },
+    closeButton: {
+        wwwImage: 'img/back.png',
+        imagePressed: 'close_pressed',
+        align: 'left',
+        event: 'closePressed'
+    },
+    // customButtons: [
+    //     {
+    //         wwwImage: 'img/share.svg.jpg',
+    //         imagePressed: 'share_pressed',
+    //         align: 'right',
+    //         event: 'sharePressed'
+    //     }
+    // ],
+    // menu: {
+    //     wwwImage: 'img/menu.svg.jpg',
+    //     imagePressed: 'menu_pressed',
+    //     title: 'Test',
+    //     cancel: 'Cancel',
+    //     align: 'right',
+    //     items: [
+    //         {
+    //             event: 'helloPressed',
+    //             label: 'Hello World!'
+    //         },
+    //         {
+    //             event: 'testPressed',
+    //             label: 'Test!'
+    //         }
+    //     ]
+    // },
+    backButtonCanClose: true
+}).addEventListener('backPressed', function(e) {
+    // alert('back pressed');
+}).addEventListener('helloPressed', function(e) {
+    // alert('hello pressed');
+}).addEventListener('sharePressed', function(e) {
+    // $scope.sharenews(e);
+}).addEventListener(cordova.ThemeableBrowser.EVT_ERR, function(e) {
+    console.error(e.message);
+}).addEventListener(cordova.ThemeableBrowser.EVT_WRN, function(e) {
+    console.log(e.message);
+});
+
 }
 // $scope.init();
-
 
 
 

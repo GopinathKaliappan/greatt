@@ -3359,8 +3359,8 @@ body {
   -webkit-box-orient: vertical;
 }
 .text-limit-4 {
-          max-height: 82px;
-        min-height: 83px;
+        max-height: 82px;
+        min-height: 79px;
         overflow: hidden;
         text-overflow: ellipsis;
         display: -webkit-box;
@@ -3379,7 +3379,7 @@ body {
   font-size: 13px;
 }
 .common-divider {
-  width: 50% !important;
+  width: 100% !important;
   display: inline-block;
 }
 .common-divider:nth-child(3n) {
