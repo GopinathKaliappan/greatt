@@ -73,14 +73,14 @@
 			    	<div class="tsb-icons " >
 			    		<div class="tsb-ic-wrp">
 
-                  <div  ng-click="showPopup()" class="add-new">Add New Channel&nbsp;
+                 <!--  <div  ng-click="showPopup()" class="add-new">Add New Channel&nbsp;
                                 
                                 </div>
-		
+		 -->
     <!-- <ion-scroll direction="x" class="tsb-hscroll" > -->
 <!--                 <a href="javascript:;" class="{{tab.icon}}" ng-repeat="tab in tabs" on-finish-render="test()">{{tab.name}}</a> -->
                                 
-                                <a href="javascript:;" class="shadow" style="background-color: {{tab.color}}; color: {{tab.text}} !important;" ng-repeat="tab in tabs"  on-finish-render="test()" >{{tab.name}}&nbsp;
+                                <a href="javascript:;" class="shadow" style="background-color: {{tab.color}}; color: {{tab.text}} !important;" ng-repeat="tab in tabs track by $index"  on-finish-render="test()" >{{tab.name}}&nbsp;
                                 
                                 </a>
                               
@@ -94,7 +94,7 @@
 			    	</div>
 			        <ion-slide-box  show-pager="false" on-slide-changed="slideHasChanged($index)">
                   
-                  <ion-slide ng-repeat="tab in tabs" ng-init="parentIndex=$index">   
+                  <ion-slide ng-repeat="tab in tabs track by $index" ng-init="parentIndex=$index">   
 
                   <ion-view>                   
                     <ion-content  style="background-color: white;"  overflow-scroll="    true" has-bouncing="true">
@@ -105,9 +105,9 @@
 
         
         <div  
-            ng-repeat="entry in data[tab.id];" 
+            ng-repeat="entry in data[tab.id] track by $index;" 
             ng-init="childIndex=$index" 
-            ng-if="$index <= (pageCount * 10) && tab.id !== 100"      
+            ng-if="$index <= (pageCount * 10) && tab.type !== 'menu'"      
             class="col col-xs-3 col-sm-3 col-md-3 col-lg-3 common-border custom-column common-divider"
            
         >
@@ -134,22 +134,34 @@
 
               
             </div> 
-            <div ng-if="tab.id === 100" ng-controller="Livetabs">
+            <div ng-if="tab.type === 'menu' && tab.id=== 1000 " ng-controller="Livetabs">
               <div class="">
-              
-                  <div ng-repeat="tt in liveTabs" class="col-md-6  pad-5 half-width-2 " ng-click="viewlistnews(tt.url)">
+
+                  <div ng-repeat="tt in liveTabs track by $index" class="col-md-6  pad-5 half-width-2 " ng-click="viewlistnews(tt.url)">
                   <div class="item item-text-wrap news-card">
                   <img ng-src="{{tt.channelImage}}" class="full-width image-height" />
                                       <div class="text-left">{{tt.name}}</div>
                                       <div class="text-left" style="font-size: 13px">{{tt.language}}</div>
 
                   </div>
+
                
               </div>
             </div>
      
 
         </div>
+        <div ng-if="tab.type === 'menu' && tab.id=== 1001 " >
+        <div ng-repeat="t in tabListing track by $index" class="item item-avatar text-left" ng-click="toggleItems(t.id, isPresent(t.id), t)"> 
+         <img ng-src="{{t.channelImage}}">
+         <h2>{{t.name}}</h2>
+        <h3> </h3>{{t.channel}} <i ng-if="isPresent(t.id)" class ="icon ion-checkmark green"></i><i ng-if="!isPresent(t.id)" class ="icon ion-checkmark"></i></h3>
+     
+
+            </div>
+
+        </div>
+
    <ion-item   class="load-more">
     <span ng-click="loadMore()" ng-if="pageCount*10 <= data[currentIndex].length"> Load More Updates</span>
     <span ng-if="pageCount*10 >= data[currentIndex].length"> No more data stay tunned

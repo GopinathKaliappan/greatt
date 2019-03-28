@@ -484,7 +484,7 @@ p img
 }
 .half-width-2 {
   width: 48%;
-  display: inline-block;
+  display: inline-block ;
 }
 .pad-10 {
   padding: 10px 

@@ -243,6 +243,36 @@ $ionicPlatform.ready(function() {
   const CORS_PROXY = "https://cors-anywhere.herokuapp.com/";
   $scope.currentIndex = 1;
   $scope.currentItems = [];
+  let tabs = [
+       {
+        name: 'Add Channels',
+        url: 'https://tamil.samayam.com/',
+        icon: '',
+        color: 'green',
+        channelImage: 'https://tamil.samayam.com/photo/66586409.cms',
+        text: 'white',
+        type: 'menu' ,
+        channel: 'News18',
+        language:'tamil',
+        category: 'lifestyle',
+        id: 1001
+      },
+      {
+        name: 'Live',
+        url: 'https://tamil.samayam.com/',
+        icon: '',
+        color: 'green',
+        channelImage: 'https://tamil.samayam.com/photo/66586409.cms',
+        text: 'white',
+        type: 'menu' ,
+        channel: 'News18',
+        language:'tamil',
+        category: 'lifestyle',
+        id: 1000
+      }
+
+  ];
+
 
             $scope.loadData = (dataId) => {
 
@@ -251,7 +281,7 @@ $ionicPlatform.ready(function() {
               }  
               fetch($scope.api + $scope.tabs.filter(item => item.id === dataId.index)[0].url).then((res)=> res.json()).then((result) =>{
                  var data = [];
-                 let items  = result.rss.channel.item;
+                 let items  = result;
                  try {
                    items.forEach(function( entry, i) {
                   // console.log(entry.title + ':' + entry.link);
@@ -301,7 +331,7 @@ $ionicPlatform.ready(function() {
            window.localStorage.setItem(id, JSON.stringify([]));                      
            $scope.tabs = $scope.removeByKey($scope.tabs, { key: 'id', value: id })
            window.localStorage.setItem('tabs', JSON.stringify($scope.tabs));
-           $scope.currentIndex += 0;
+           // $scope.currentIndex += 0;
         }
         // $scope.tabs = $scope.removeByKey($scope.tabs, { key: 'id', value: id })
    }
@@ -309,59 +339,66 @@ $ionicPlatform.ready(function() {
         $scope.myPopup.hide();
    }
 
+
     $scope.showPopup = function() {
-      $scope.data = {}
+      // $scope.data = {}
         fetch($scope.tabsApi).then((res)=> res.json()).then((response)=> {
-                              $scope.$apply( () => {
+          console.log(response)
+              $scope.$apply( () => {
                               $scope.tabListing = response;
                               // window.localStorage.setItem('tabs', JSON.stringify($scope.tabs));
              })   
-                            })
+        })
       // Custom popup
-      $scope.myPopup = $ionicPopup.show({
-         template: `<ion-view> 
-         <ion-content overflow-scroll="true" has-bouncing="true" class="top-space"> 
-                       <i class="icon ion-android-close close-new" ng-click="closePopup()"></i> 
+//       $scope.myPopup = $ionicPopup.show({
+//          template: `<ion-view> 
+//          <ion-content overflow-scroll="true" has-bouncing="true" class="top-space"> 
+//                        <i class="icon ion-android-close close-new" ng-click="closePopup()"></i> 
                        
-                        <div class="list-news">
-<ion-list>                          
-  <div ng-repeat="t in tabListing" class="item item-avatar text-left" ng-click="toggleItems(t.id, isPresent(t.id), t)"> 
-    <img ng-src="{{t.channelImage}}">
-    <h2>{{t.name}}</h2>
-    <h3>{{t.channel}} <i ng-if="isPresent(t.id)" class ="icon ion-checkmark green"></i><i ng-if="!isPresent(t.id)" class ="icon ion-checkmark"></i></h3>
+//                         <div class="list-news">
+// <ion-list>                          
+//   <div ng-repeat="t in tabListing" class="item item-avatar text-left" ng-click="toggleItems(t.id, isPresent(t.id), t)"> 
+//     <img ng-src="{{t.channelImage}}">
+//     <h2>{{t.name}}</h2>
+//     <h3>{{t.channel}} <i ng-if="isPresent(t.id)" class ="icon ion-checkmark green"></i><i ng-if="!isPresent(t.id)" class ="icon ion-checkmark"></i></h3>
      
 
-</div>
-</ion-list>
-                        </ion-content>
-                       </ion-view>
-                        `,
-         title: 'Add New Channels',
-         subTitle: 'Add your favourite channels stay updated',
-         scope: $scope,
-      });
+// </div>
+// </ion-list>
+//                         </ion-content>
+//                        </ion-view>
+//                         `,
+//          title: 'Add New Channels',
+//          subTitle: 'Add your favourite channels stay updated',
+//          scope: $scope,
+//       });
 
-      $scope.myPopup.then(function(res) {
-         console.log('Tapped!', res);
-      });    
-      }; 
-      $scope.closePopup =() => {
-        window.location.reload();
+//       $scope.myPopup.then(function(res) {
+//          console.log('Tapped!', res);
+//       });    
+      };
+      $scope.showPopup(); 
+      // $scope.closePopup =() => {
+      //   window.location.reload();
         
-        $scope.myPopup.close();
-      }
+      //   $scope.myPopup.close();
+      // }
    $scope.loadTabs = () => {
       if(window.localStorage.getItem('tabs') === null) {
-        
-          fetch($scope.tabsApi).then((res)=> res.json()).then((response)=> {
-            $scope.$apply( () => {
-              $scope.tabs = response;
-              window.localStorage.setItem('tabs', JSON.stringify($scope.tabs));
-              // $scope.loadData({ index: $scope.tabs[0].id });  
-            }) 
-          }) 
+          $scope.tabs = tabs;
+          window.localStorage.setItem('tabs', JSON.stringify($scope.tabs));
+          // fetch($scope.tabsApi).then((res)=> res.json()).then((response)=> {
+          //   $scope.$apply( () => {
+          //     // $scope.tabs = response;
+          //     response.map((data, index)=> {
+          //         $scope.tabs.push(data);    
+          //     });
+          //     window.localStorage.setItem('tabs', JSON.stringify($scope.tabs));
+          //     // $scope.loadData({ index: $scope.tabs[0].id });  
+          //   }) 
+          // }) 
       } else {
-        
+        // alert(1)
              $scope.tabs = JSON.parse(window.localStorage.getItem('tabs'));
              // $scope.loadData({ index: $scope.tabs[0].id });
       }  
@@ -550,8 +587,6 @@ cordova.ThemeableBrowser.open(link[Object.keys(link)[0]], '_blank', {
 
 }
 // $scope.init();
-
-
 
 
 
