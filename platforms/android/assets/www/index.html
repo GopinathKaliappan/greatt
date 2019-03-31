@@ -32,7 +32,7 @@
 
 	<!-- <script src="js/JQUERY.js"></script>	 -->
 
-  <script src="js/rss-parser.min.js"></script>
+<!--   <script src="js/rss-parser.min.js"></script> -->
 	
   <!-- your app's script -->
     <script>
@@ -71,20 +71,23 @@
         <ion-content  ng-controller="FeedController" scroll="false" overflow-scroll="true" has-bouncing="true">
           	<tab-slide-box tab="0" >
 			    	<div class="tsb-icons " >
-			    		<div class="tsb-ic-wrp">
+			    		<div class="tsb-ic-wrp mt_10 mb_5">
 
                  <!--  <div  ng-click="showPopup()" class="add-new">Add New Channel&nbsp;
                                 
                                 </div>
 		 -->
-    <!-- <ion-scroll direction="x" class="tsb-hscroll" > -->
+    <ion-scroll 
+        direction="x" 
+        class="tsb-hscroll" 
+ >
 <!--                 <a href="javascript:;" class="{{tab.icon}}" ng-repeat="tab in tabs" on-finish-render="test()">{{tab.name}}</a> -->
                                 
-                                <a href="javascript:;" class="shadow" style="background-color: {{tab.color}}; color: {{tab.text}} !important;" ng-repeat="tab in tabs track by $index"  on-finish-render="test()" >{{tab.name}}&nbsp;
+                                <a href="javascript:;" style="background-color: {{colors[$index]}};border-bottom: 10px solid {{currentColor}};color: {{tab.text}} !important; " ng-repeat="tab in tabs track by $index"  on-finish-render="test()" >{{tab.name}}&nbsp;
                                 
                                 </a>
                               
-              <!-- </ion-scroll>	    		 -->
+              </ion-scroll>	    		
 <!-- 
   							<a href="javascript:;" class="ion-planet"></a>
   							<a href="javascript:;" class="ion-leaf"></a>
@@ -98,7 +101,7 @@
 
                   <ion-view>                   
                     <ion-content  style="background-color: white;"  overflow-scroll="    true" has-bouncing="true">
-{{tab.id}}
+
                             <!-- <h5>{{tab.name}}</h5> -->
       
   <div class="custom-column" >  
@@ -107,13 +110,13 @@
         <div  
             ng-repeat="entry in data[tab.id] track by $index;" 
             ng-init="childIndex=$index" 
-            ng-if="$index <= (pageCount * 10) && tab.type !== 'menu'"      
+            ng-if="$index <= (pageCount * 15) && tab.type !== 'menu'"      
             class="col col-xs-3 col-sm-3 col-md-3 col-lg-3 common-border custom-column common-divider"
            
         >
               
             <div class="image-divider">
-                <img ng-src="{{entry.img || entry.enclosure._attributes.url }}" style="width: 100%"/>
+                <img ng-src="{{entry.img || entry.enclosure._attributes.url }}" on-error-src="img/loading.gif" style="width: 100%"/>
             </div>
             <div class="font-medium text-align-left">
                  {{entry.title._cdata || entry.title._text}}
@@ -152,19 +155,26 @@
 
         </div>
         <div ng-if="tab.type === 'menu' && tab.id=== 1001 " >
-        <div ng-repeat="t in tabListing track by $index" class="item item-avatar text-left" ng-click="toggleItems(t.id, isPresent(t.id), t)"> 
-         <img ng-src="{{t.channelImage}}">
-         <h2>{{t.name}}</h2>
-        <h3> </h3>{{t.channel}} <i ng-if="isPresent(t.id)" class ="icon ion-checkmark green"></i><i ng-if="!isPresent(t.id)" class ="icon ion-checkmark"></i></h3>
+        <ion-list>
+        <ion-item ng-repeat="t in tabListing track by $index" class="item text-left channel-card" > 
+
+        <div class="channel-card-divider">
+            <img ng-src="{{t.channelImage}}" />
+
+         </div>
+         <div class="channel-card-divider" ng-click="toggleItems(t.id, isPresent(t.id), t)">
+            <h2>{{t.name}}</h2><i ng-if="isPresent(t.id)" class ="icon ion-checkmark-circled green tick-icon"></i><i ng-if="!isPresent(t.id)" class ="icon ion-checkmark-circled tick-icon"></i>
+         </div>
+        
      
 
-            </div>
-
+            </ion-item>
+</ion-list>
         </div>
-        
+
    <ion-item   class="load-more">
-    <span ng-click="loadMore()" ng-if="pageCount*10 <= data[currentIndex].length"> Load More Updates</span>
-    <span ng-if="pageCount*10 >= data[currentIndex].length"> No more data stay tunned
+    <span ng-click="loadMore()" ng-if="pageCount*15 <= data[currentIndex].length"> Load More Updates</span>
+    <span ng-if="pageCount*15 >= data[currentIndex].length"> No more data stay tunned
         <div style="margin-top: 50px">
             <img src="https://qrs.in/frontent/images/noresult.png" style="width: 70%" />
         </div>

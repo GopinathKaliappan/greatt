@@ -1,8 +1,5 @@
- // var getImage = function (content)  {
- //    var regex = /<img.*?src='(.*?)'/;
- //    var src = regex.exec(content)[1]; 
- //    return src;
- // } 
+
+const language = 'tamil';
 
  var getImage = function (string)  {
 
@@ -26,7 +23,7 @@
 
 var app = angular.module('slidebox', ['ionic', 'tabSlideBox','ngCordova', 'xml', 'rss-parser'])
     .run(['$q', '$http', '$rootScope', '$location', '$window', '$timeout', 
-          function($q, $http, $rootScope, $location, $window, $timeout){
+          function($q, $http, $rootScope, $location, $window, $timeout,$ionicPlatform){
       
           $rootScope.$on("$locationChangeStart", function(event, next, current){
               $rootScope.error = null;
@@ -35,6 +32,31 @@ var app = angular.module('slidebox', ['ionic', 'tabSlideBox','ngCordova', 'xml',
               
               
           });
+          
+// $ionicPlatform.ready(function() {
+
+//     if( ionic.Platform.isAndroid() )  { 
+
+//    admobid = { // for Android
+//       banner: 'ca-app-pub-5179473842241588/7169440949' // Change this to your Ad Unit Id for banner...
+//    };
+
+
+
+//    if(AdMob) {
+    
+//    alert(1); 
+//          AdMob.createBanner( {
+//          adId:admobid.banner, 
+//          position:AdMob.AD_POSITION.BOTTOM_CENTER, 
+//          autoShow:true
+//       } );
+//     }
+
+
+// }
+
+// });
       }
       ]);
 
@@ -99,19 +121,6 @@ app.controller("Livetabs", function($http, $scope,$timeout,$ionicPlatform,$cordo
 
 $scope.viewlistnews=function(link)
 {
-  // $ionicLoading.show({ template: 'Loading ...'});
-  // setTimeout(()=> {
-  //   $ionicLoading.hide();
-
-  //   $cordovaInAppBrowser.open(link[Object.keys(link)[0]], '_blank')
-  //     .then(function(event) {
-  //         // success
-  //     })
-  //     .catch(function(event) {
-    
-  //       // error
-  // });
-  // }, 1000)  
   
 cordova.ThemeableBrowser.open(link, '_blank', {
     statusbar: {
@@ -137,31 +146,6 @@ cordova.ThemeableBrowser.open(link, '_blank', {
         align: 'left',
         event: 'closePressed'
     },
-    // customButtons: [
-    //     {
-    //         wwwImage: 'img/share.svg.jpg',
-    //         imagePressed: 'share_pressed',
-    //         align: 'right',
-    //         event: 'sharePressed'
-    //     }
-    // ],
-    // menu: {
-    //     wwwImage: 'img/menu.svg.jpg',
-    //     imagePressed: 'menu_pressed',
-    //     title: 'Test',
-    //     cancel: 'Cancel',
-    //     align: 'right',
-    //     items: [
-    //         {
-    //             event: 'helloPressed',
-    //             label: 'Hello World!'
-    //         },
-    //         {
-    //             event: 'testPressed',
-    //             label: 'Test!'
-    //         }
-    //     ]
-    // },
     backButtonCanClose: true
 }).addEventListener('backPressed', function(e) {
     // alert('back pressed');
@@ -175,8 +159,8 @@ cordova.ThemeableBrowser.open(link, '_blank', {
     console.log(e.message);
 });
 
-}
-$scope.liveApi = 'https://agaramnews.herokuapp.com/livetabs'
+} 
+$scope.liveApi = 'https://agaramnews.herokuapp.com/livetabs?language='+language
   $scope.loadLive = (dataId) => {
               if(window.localStorage.getItem('liveTabs') !== undefined) {
                      $scope.liveTabs = JSON.parse(window.localStorage.getItem('liveTabs'));
@@ -197,7 +181,7 @@ $scope.liveApi = 'https://agaramnews.herokuapp.com/livetabs'
             }
   $scope.loadLive()
 })
-app.controller("FeedController", function($http, $scope,$timeout,$ionicPlatform,$cordovaSocialSharing,$ionicSlideBoxDelegate, $ionicPopup, $cordovaInAppBrowser, $ionicLoading) {
+app.controller("FeedController", function($http, $scope,$timeout,$ionicPlatform,$cordovaSocialSharing,$ionicSlideBoxDelegate, $ionicPopup, $cordovaInAppBrowser, $ionicLoading, $cordovaAdMob) {
   
 document.addEventListener("deviceready", onDeviceReady, false);
 function onDeviceReady() {
@@ -209,18 +193,23 @@ $ionicPlatform.ready(function() {
 
     if( ionic.Platform.isAndroid() )  { 
 
-   // admobid = { // for Android
-   //    banner: 'ca-app-pub-4160184650581064/7164351033' // Change this to your Ad Unit Id for banner...
-   // };
+   admobid = { // for Android
+      banner: 'ca-app-pub-5179473842241588/5965784880' // Change this to your Ad Unit Id for banner...
+   };
 
 
 
-   // if(AdMob) 
-   //    AdMob.createBanner( {
-   //       adId:admobid.banner, 
-   //       position:AdMob.AD_POSITION.BOTTOM_CENTER, 
-   //       autoShow:true
-   //    } );
+   if(AdMob) {
+    alert(1)
+    // var admob = window.plugins.AdMob;
+
+         AdMob.createBanner( {
+         adId:admobid.banner, 
+         position:AdMob.AD_POSITION.BOTTOM_CENTER, 
+         autoShow:true
+      } );
+    }
+
 }
 
 });
@@ -228,13 +217,63 @@ $ionicPlatform.ready(function() {
  // $scope.checkStatus = (currentIndex) => {
  //  return $scope.count <= currentIndex
  // }
-
-  let parser = new RSSParser();
+  $scope.colors = [
+    '#1B2631',
+    '#512E5F',
+    '#DF0101',
+    '#145A32',
+    '#922B21',
+    '#6E2C00',
+    '#512E5F',
+    '#1B2631',
+    '#154360',
+    '#145A32',
+    '#7D6608',
+    '#1B2631',
+    '#FF5733',
+    '#145A32',
+    '#922B21',
+    '#6E2C00',
+    '#512E5F',
+    '#1B2631',
+    '#154360',
+    '#145A32',
+    '#7D6608',
+    '#1B2631',
+    '#154360',
+    '#145A32',
+    '#7D6608',
+    '#1B2631',
+    '#FF5733',
+    '#145A32',
+    '#922B21',
+    '#6E2C00',
+    '#512E5F',
+    '#1B2631',
+    '#154360',
+    '#145A32',
+    '#7D6608',
+    '#1B2631',    
+    '#145A32',
+    '#7D6608',
+    '#1B2631',
+    '#FF5733',
+    '#145A32',
+    '#922B21',
+    '#6E2C00',
+    '#512E5F',
+    '#1B2631',
+    '#154360',
+    '#145A32',
+    '#7D6608',
+    '#1B2631',    
+  ] 
+  // let parser = new RSSParser();
   $scope.entries = [];
   $scope.api = 'https://agaramnews.herokuapp.com?url=';
   // $scope.api = 'http://localhost:3000?url=';
   // $scope.tabsApi = 'https://agaramnews.herokuapp.com/tabs';
-  $scope.tabsApi = 'https://agaramnews.herokuapp.com/tabs';
+  $scope.tabsApi = 'https://agaramnews.herokuapp.com/tabs?language=' +language;
   // $scope.tabsApi = 'http://localhost:3000/tabs';
   $scope.pagination = '&page=0count=20';
   $scope.apiKey = '&api_key=hpi0ghvdfyy5xbbiwuruga2i6p49cnf0jilgt3dg';
@@ -258,7 +297,7 @@ $ionicPlatform.ready(function() {
         id: 1001
       },
       {
-        name: 'Live',
+        name: 'News Paper',
         url: 'https://tamil.samayam.com/',
         icon: '',
         color: 'green',
@@ -272,7 +311,6 @@ $ionicPlatform.ready(function() {
       }
 
   ];
-
 
             $scope.loadData = (dataId) => {
 
@@ -323,7 +361,8 @@ $ionicPlatform.ready(function() {
 
    $scope.toggleItems = (id, status, item) => {
         if(!status) {
-          $scope.tabs.push(item); 
+          $scope.tabs.splice(2,0,item);
+          // $scope.tabs.insert(2,item); 
           window.localStorage.setItem('tabs', JSON.stringify($scope.tabs));
            // $scope.currentIndex -= 1;  
         } else {
@@ -384,6 +423,7 @@ $ionicPlatform.ready(function() {
       //   $scope.myPopup.close();
       // }
    $scope.loadTabs = () => {
+
       if(window.localStorage.getItem('tabs') === null) {
           $scope.tabs = tabs;
           window.localStorage.setItem('tabs', JSON.stringify($scope.tabs));
@@ -402,6 +442,7 @@ $ionicPlatform.ready(function() {
              $scope.tabs = JSON.parse(window.localStorage.getItem('tabs'));
              // $scope.loadData({ index: $scope.tabs[0].id });
       }  
+            $scope.currentColor = $scope.colors[0];
     }  
     
     $scope.loadTabs();
@@ -415,8 +456,9 @@ $ionicPlatform.ready(function() {
     }  
 
             $scope.onSlideMove = (dataNew) => {
-                
-                try {
+                       
+                    try {
+                          $scope.currentColor = $scope.colors[dataNew.index];
                         let dataId = {
                               index: $scope.tabs[dataNew.index].id 
                         }     
@@ -589,17 +631,196 @@ cordova.ThemeableBrowser.open(link[Object.keys(link)[0]], '_blank', {
 // $scope.init();
 
 
+  // $scope.tabs = [
+  //     // {
+  //     //     name: 'Live Updates',
+  //     //     url: 'https://www.news18.com/rss/india.xml',
+  //     //     icon: '',
+  //     //     color: 'green',
+  //     //     channelImage: 'https://images-na.ssl-images-amazon.com/images/I/41glolYSKtL._SY355_.png',
+  //     //     text: 'white',
+  //     //     type: '_cdata' ,
+  //     //     channel: 'menu',
+  //     //     language:'engish',
+  //     //     category: 'lifestyle',
+  //     //     id: 100
+  //     // },
+  //     {
+  //         name: 'India',
+  //         url: 'https://www.news18.com/rss/india.xml',
+  //         icon: '',
+  //         color: 'purple',
+  //         channelImage: 'https://images-na.ssl-images-amazon.com/images/I/41glolYSKtL._SY355_.png',
+  //         text: 'white',
+  //         type: '_cdata' ,
+  //         channel: 'News18',
+  //         language:'engish',
+  //         category: 'lifestyle',
+  //         id: 30
+  //     },
+  //     {
+  //         name: 'World',
+  //         url: 'https://www.news18.com/rss/world.xml',
+  //         icon: '',
+  //         color: '#C70039',
+  //         text: 'white',
+  //         type: '_cdata',
+  //         channel: 'News18',
+  //            channelImage: 'https://images-na.ssl-images-amazon.com/images/I/41glolYSKtL._SY355_.png',
+  //         language:'engish',
+  //         category: 'world',
+  //         id: 31
+  //     },
+  //     {
+  //         name: 'Cricket',
+  //         url: 'https://www.news18.com/rss/cricketnext.xml',
+  //         icon: '',
+  //         color: '#900C3F',
+  //         text: 'white',
+  //         type: '_cdata',
+  //         channel: 'News18',
+  //         channelImage: 'https://images-na.ssl-images-amazon.com/images/I/41glolYSKtL._SY355_.png',
+  //         language:'engish',
+  //         category: 'cricet',
+  //         id: 32
+  //     },
+
+  //     {
+  //         name: 'Life Style',
+  //         url: 'https://www.news18.com/rss/lifestyle.xml',
+  //         icon: '',
+  //         color: '#922B21',
+  //         text: 'white',
+  //         type: '_cdata',
+  //         channel: 'News18',
+  //         channelImage: 'https://images-na.ssl-images-amazon.com/images/I/41glolYSKtL._SY355_.png',
+  //         language:'engish',
+  //         category: 'lifestyle',
+  //         id: 33
+  //     },
+  //     {
+  //         name: 'Business',
+  //         url: 'https://www.huffpost.com/section/business/feed',
+  //         icon: '',
+  //         color: '#4A235A',
+  //         text: 'white',
+  //         type: '_cdata',
+  //         channel: 'Huffington Post',
+  //         channelImage: 'https://keratoconusinserts.com/wp-content/uploads/revslider/janbbwsite/press-logo-huffington-post.png',
+  //         language:'engish',
+  //         category: 'business',
+  //         id: 34
+  //     },
+  //     {
+  //         name: 'Movies',
+  //         url: 'https://www.news18.com/rss/movies.xml',
+  //         icon: '',
+  //         color: 'grey',
+  //         text: 'white',
+  //         type: '_cdata',
+  //         channel: 'News18',
+  //         channelImage: 'https://images-na.ssl-images-amazon.com/images/I/41glolYSKtL._SY355_.png',
+  //         language:'engish',
+  //         category: 'movies',
+  //         id: 35    
+  //     },{
+  //         name: 'One India',
+  //         url: 'https://tamil.oneindia.com/rss/tamil-art-culture-fb.xml',
+  //         icon: '',
+  //         color: 'grey',
+  //         text: 'white',
+  //         type: '_cdata',
+  //         channel: 'News18',
+  //         channelImage: 'https://feeds.feedburner.com/Puthiyathalaimurai_India_News?format=xml',
+  //         language:'engish',
+  //         category: 'movies',
+  //         id: 36   
+  //     },{
+  //         name: 'Dinamalar Frontpage',
+  //         url: 'https://feeds.feedburner.com/dinamalar/Front_page_news',
+  //         icon: '',
+  //         color: 'grey',
+  //         text: 'white',
+  //         type: '_cdata',
+  //         channel: 'News18',
+  //         channelImage: 'https://releaseadvt.com/paper_image/2017.10.06_09-52-14dinamalar-LOGO.png',
+  //         language:'engish',
+  //         category: 'movies',
+  //         id: 37   
+  //     },{
+  //         name: 'Dinamalar அரசியல் செய்திகள்',
+  //         url: 'https://rss.dinamalar.com/?cat=pot1',
+  //         icon: '',
+  //         color: 'purple',
+  //         text: 'white',
+  //         type: '_cdata',
+  //         channel: 'News18',
+  //         channelImage: 'https://releaseadvt.com/paper_image/2017.10.06_09-52-14dinamalar-LOGO.png',
+  //         language:'engish',
+  //         category: 'movies',
+  //         id: 37   
+  //     },{
+  //         name: 'Dinamalar சம்பவங்கள்',
+  //         url: 'https://rss.dinamalar.com/?cat=sam1',
+  //         icon: '',
+  //         color: 'orange',
+  //         text: 'white',
+  //         type: '_cdata',
+  //         channel: 'News18',
+  //         channelImage: 'https://releaseadvt.com/paper_image/2017.10.06_09-52-14dinamalar-LOGO.png',
+  //         language:'engish',
+  //         category: 'movies',
+  //         id: 38   
+  //     },{
+  //         name: 'Dinamalar சினிமா செய்திகள்',
+  //         url: 'https://rss.dinamalar.com/tamilnadunews.asp',
+  //         icon: '',
+  //         color: 'brown',
+  //         text: 'white',
+  //         type: '_cdata',
+  //         channel: 'News18',
+  //         channelImage: 'https://releaseadvt.com/paper_image/2017.10.06_09-52-14dinamalar-LOGO.png',
+  //         language:'engish',
+  //         category: 'movies',
+  //         id: 39   
+  //     },{
+  //         name: 'Dinamalar விளையாட்டு செய்திகள்',
+  //         url: 'https://sports.dinamalar.com/rss/',
+  //         icon: '',
+  //         color: 'brown',
+  //         text: 'white',
+  //         type: '_cdata',
+  //         channel: 'News18',
+  //         channelImage: 'https://releaseadvt.com/paper_image/2017.10.06_09-52-14dinamalar-LOGO.png',
+  //         language:'engish',
+  //         category: 'movies',
+  //         id: 40   
+  //     },{
+  //         name: 'Dinamalar Football',
+  //         url: 'https://sports.dinamalar.com/rss/Football',
+  //         icon: '',
+  //         color: 'brown',
+  //         text: 'white',
+  //         type: '_cdata',
+  //         channel: 'News18',
+  //         channelImage: 'https://releaseadvt.com/paper_image/2017.10.06_09-52-14dinamalar-LOGO.png',
+  //         language:'engish',
+  //         category: 'movies',
+  //         id: 41   
+  //     }
+  //   ];
 
 
 });
 
-app.directive('imageonload', function() {
+app.directive('onErrorSrc', function() {
     return {
-        restrict: 'A',
-        link: (scope, element, attrs) => {
-            element.bind('load', () => {
-                element.src = element.src;
-            });
+        link: function(scope, element, attrs) {
+          element.bind('error', function() {
+            if (attrs.src != attrs.onErrorSrc) {
+              attrs.$set('src', attrs.onErrorSrc);
+            }
+          });
         }
-    };
-});
+    }
+});;

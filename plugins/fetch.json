@@ -7,14 +7,6 @@
         "is_top_level": true,
         "variables": {}
     },
-    "cordova-plugin-console": {
-        "source": {
-            "type": "registry",
-            "id": "cordova-plugin-console"
-        },
-        "is_top_level": true,
-        "variables": {}
-    },
     "cordova-plugin-whitelist": {
         "source": {
             "type": "registry",
@@ -39,23 +31,6 @@
         "is_top_level": true,
         "variables": {}
     },
-    "ionic-plugin-keyboard": {
-        "source": {
-            "type": "registry",
-            "id": "ionic-plugin-keyboard"
-        },
-        "is_top_level": true,
-        "variables": {}
-    },
-    "cordova-plugin-image-picker": {
-        "source": {
-            "type": "git",
-            "url": "https://github.com/wymsee/cordova-imagePicker.git",
-            "subdir": "."
-        },
-        "is_top_level": true,
-        "variables": {}
-    },
     "cordova-plugin-x-socialsharing": {
         "source": {
             "type": "git",
@@ -65,43 +40,10 @@
         "is_top_level": true,
         "variables": {}
     },
-    "cordova-plugin-x-toast": {
-        "source": {
-            "type": "git",
-            "url": "https://github.com/EddyVerbruggen/Toast-PhoneGap-Plugin.git",
-            "subdir": "."
-        },
-        "is_top_level": true,
-        "variables": {}
-    },
     "cordova-plugin-compat": {
         "source": {
             "type": "registry",
             "id": "cordova-plugin-compat"
-        },
-        "is_top_level": true,
-        "variables": {}
-    },
-    "cordova-plugin-android-permissions": {
-        "source": {
-            "type": "registry",
-            "id": "cordova-plugin-android-permissions@0.6.0"
-        },
-        "is_top_level": true,
-        "variables": {}
-    },
-    "cordova-plugin-inappbrowser": {
-        "source": {
-            "type": "registry",
-            "id": "cordova-plugin-inappbrowser@1.5.0"
-        },
-        "is_top_level": true,
-        "variables": {}
-    },
-    "cordova-plugin-ionic-webview": {
-        "source": {
-            "type": "registry",
-            "id": "cordova-plugin-ionic-webview@^3.0.0"
         },
         "is_top_level": true,
         "variables": {}
@@ -120,6 +62,46 @@
             "id": "cordova-plugin-themeablebrowser"
         },
         "is_top_level": true,
+        "variables": {}
+    },
+    "cordova-plugin-extension": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-extension"
+        },
+        "is_top_level": false,
+        "variables": {}
+    },
+    "cordova-plugin-admobpro": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-admobpro@~2.37.2"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "cordova-connectivity-monitor": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-connectivity-monitor"
+        },
+        "is_top_level": false,
+        "variables": {}
+    },
+    "cordova-play-services-version-adapter": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-play-services-version-adapter"
+        },
+        "is_top_level": false,
+        "variables": {}
+    },
+    "cordova-admobsdk": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-admobsdk"
+        },
+        "is_top_level": false,
         "variables": {}
     }
 }
