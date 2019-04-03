@@ -55,6 +55,68 @@ module.exports = [
         "clobbers": [
             "window.plugins.socialsharing"
         ]
+    },
+    {
+        "id": "cordova-plugin-x-toast.Toast",
+        "file": "plugins/cordova-plugin-x-toast/www/Toast.js",
+        "pluginId": "cordova-plugin-x-toast",
+        "clobbers": [
+            "window.plugins.toast"
+        ]
+    },
+    {
+        "id": "cordova-plugin-dialogs.notification",
+        "file": "plugins/cordova-plugin-dialogs/www/notification.js",
+        "pluginId": "cordova-plugin-dialogs",
+        "merges": [
+            "navigator.notification"
+        ]
+    },
+    {
+        "id": "cordova-plugin-dialogs.notification_android",
+        "file": "plugins/cordova-plugin-dialogs/www/android/notification.js",
+        "pluginId": "cordova-plugin-dialogs",
+        "merges": [
+            "navigator.notification"
+        ]
+    },
+    {
+        "id": "cordova-plugin-nativestorage.mainHandle",
+        "file": "plugins/cordova-plugin-nativestorage/www/mainHandle.js",
+        "pluginId": "cordova-plugin-nativestorage",
+        "clobbers": [
+            "NativeStorage"
+        ]
+    },
+    {
+        "id": "cordova-plugin-nativestorage.LocalStorageHandle",
+        "file": "plugins/cordova-plugin-nativestorage/www/LocalStorageHandle.js",
+        "pluginId": "cordova-plugin-nativestorage"
+    },
+    {
+        "id": "cordova-plugin-nativestorage.NativeStorageError",
+        "file": "plugins/cordova-plugin-nativestorage/www/NativeStorageError.js",
+        "pluginId": "cordova-plugin-nativestorage"
+    },
+    {
+        "id": "cordova-plugin-apprate.AppRate",
+        "file": "plugins/cordova-plugin-apprate/www/AppRate.js",
+        "pluginId": "cordova-plugin-apprate",
+        "clobbers": [
+            "AppRate"
+        ]
+    },
+    {
+        "id": "cordova-plugin-apprate.locales",
+        "file": "plugins/cordova-plugin-apprate/www/locales.js",
+        "pluginId": "cordova-plugin-apprate",
+        "runs": true
+    },
+    {
+        "id": "cordova-plugin-apprate.storage",
+        "file": "plugins/cordova-plugin-apprate/www/storage.js",
+        "pluginId": "cordova-plugin-apprate",
+        "runs": true
     }
 ];
 module.exports.metadata = 
@@ -69,7 +131,11 @@ module.exports.metadata =
     "cordova-plugin-statusbar": "2.1.3",
     "cordova-plugin-themeablebrowser": "0.2.17",
     "cordova-plugin-whitelist": "1.2.2",
-    "cordova-plugin-x-socialsharing": "5.1.3"
+    "cordova-plugin-x-socialsharing": "5.1.3",
+    "cordova-plugin-x-toast": "2.7.2",
+    "cordova-plugin-dialogs": "2.0.1",
+    "cordova-plugin-nativestorage": "2.3.2",
+    "cordova-plugin-apprate": "1.4.0"
 };
 // BOTTOM OF METADATA
 });

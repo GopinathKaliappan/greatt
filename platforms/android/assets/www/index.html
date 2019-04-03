@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="format-detection" content="telephone=no" />
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
-    <title>Tabbed Slide box</title>
+    <title>News App Inc</title>
 
     <!-- ionic css -->
     <link href="lib/ionic/css/ionic.css" rel="stylesheet">
@@ -69,7 +69,7 @@
 	<script id="index.html" type="text/ng-template">
       <ion-view title="Tabbed Slide box" hide-nav-bar="true">
         <ion-content  ng-controller="FeedController" scroll="false" overflow-scroll="true" has-bouncing="true">
-          	<tab-slide-box tab="0" >
+          	<tab-slide-box tab="{{currentTab}}" >
 			    	<div class="tsb-icons " >
 			    		<div class="tsb-ic-wrp mt_10 mb_5">
 
@@ -97,10 +97,10 @@
 			    	</div>
 			        <ion-slide-box  show-pager="false" on-slide-changed="slideHasChanged($index)">
                   
-                  <ion-slide ng-repeat="tab in tabs track by $index" ng-init="parentIndex=$index">   
+                  <ion-slide ng-repeat="tab in tabs track by $index" ng-init="parentIndex=$index" >   
 
                   <ion-view>                   
-                    <ion-content  style="background-color: white;"  overflow-scroll="    true" has-bouncing="true">
+                    <ion-content  style="background-color: white;"  overflow-scroll="true" has-bouncing="true" class="animated bounce delay-2s">
 
                             <!-- <h5>{{tab.name}}</h5> -->
       
@@ -112,29 +112,26 @@
             ng-init="childIndex=$index" 
             ng-if="$index <= (pageCount * 15) && tab.type !== 'menu'"      
             class="col col-xs-3 col-sm-3 col-md-3 col-lg-3 common-border custom-column common-divider"
+            
            
         >
               
-            <div class="image-divider">
+            <div class="image-divider" ng-click="viewnews(entry.link)">
                 <img ng-src="{{entry.img || entry.enclosure._attributes.url }}" on-error-src="img/loading.gif" style="width: 100%"/>
             </div>
-            <div class="font-medium text-align-left">
-                 {{entry.title._cdata || entry.title._text}}
-                 
-                     
-            </div>
-            <div class="bottom-container-left"  ng-click="viewnews(entry.link)" >
-               <div  class="read-news" >Read news</div>
-               <div  class="copyright">{{entry.copyright._text}}</div>
-            </div>
-            <div class="bottom-container-right">
-          
-           <!--     <i ng-click="shareWhatsapp(entry.title._cdata, entry.img, entry.link._cdata)" class="icon ion-logo-whatsapp icon-common green" ></i>
-               <i ng-click="shareFacebook(entry.title._cdata, entry.img, entry.link._cdata)" class="icon ion-logo-facebook icon-common blue" ></i> -->
-               <i ng-click="sharenews(entry.title._cdata, entry.title._cdata, entry.img, entry.link._cdata )" class="icon ion-share icon-common red" ></i>
-             </div>
-             
+            <div class="font-medium text-align-left  text-limit-4" ng-click="viewnews(entry.link)">
 
+                 {{entry.title._cdata || entry.title._text}}
+                           
+                       
+            </div>
+
+            <div class="">
+                        <div  class="text-left date-text" >
+               {{ entry.pubDate._text  }}</div> 
+               <!-- <div  class="copyright">{{entry.copyright._text}}</div> -->
+                              <i ng-click="sharenews(entry.title._cdata, entry.title._cdata, entry.img, entry.link._cdata )" class="icon ion-share icon-common red" ></i>
+            </div>
               
             </div> 
             <div ng-if="tab.type === 'menu' && tab.id=== 1000 " ng-controller="Livetabs">
@@ -155,15 +152,24 @@
 
         </div>
         <div ng-if="tab.type === 'menu' && tab.id=== 1001 " >
-        <ion-list>
-        <ion-item ng-repeat="t in tabListing track by $index" class="item text-left channel-card" > 
+        <!-- <div class="list">
 
-        <div class="channel-card-divider">
+  <label class="item item-input item-select">
+    <div class="input-label">
+      Language
+    </div>
+<select ng-options="item as item.name for item in languages track by item.name" ng-model="language" ng-change="selectLanguage(item)"></select>
+
+</div>   -->  
+        <ion-list>
+        <ion-item ng-repeat="t in tabListing track by $index" class="item text-left channel-card"> 
+
+<!--         <div class="channel-card-divider">
             <img ng-src="{{t.channelImage}}" />
 
-         </div>
+         </div> -->
          <div class="channel-card-divider" ng-click="toggleItems(t.id, isPresent(t.id), t)">
-            <h2>{{t.name}}</h2><i ng-if="isPresent(t.id)" class ="icon ion-checkmark-circled green tick-icon"></i><i ng-if="!isPresent(t.id)" class ="icon ion-checkmark-circled tick-icon"></i>
+            <h2>{{t.name}} -<span style="color: {{colors[$index]}};" class="channel-text">{{t.channel}}</span></h2><i ng-if="isPresent(t.id)" class ="icon ion-checkmark-circled green tick-icon"></i><i ng-if="!isPresent(t.id)" class ="icon ion-checkmark-circled tick-icon"></i>
          </div>
         
      
@@ -173,6 +179,7 @@
         </div>
 
    <ion-item   class="load-more">
+   
     <span ng-click="loadMore()" ng-if="pageCount*15 <= data[currentIndex].length"> Load More Updates</span>
     <span ng-if="pageCount*15 >= data[currentIndex].length"> No more data stay tunned
         <div style="margin-top: 50px">

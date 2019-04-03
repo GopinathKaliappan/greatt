@@ -3379,7 +3379,7 @@ body {
   font-size: 13px;
 }
 .common-divider {
-  width: 100% !important;
+  width: 50% !important;
   display: inline-block;
 }
 .common-divider:nth-child(3n) {
