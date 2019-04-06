@@ -113,15 +113,6 @@
         "is_top_level": true,
         "variables": {}
     },
-    "cordova-plugin-apprate": {
-        "source": {
-            "type": "git",
-            "url": "https://github.com/pushandplay/cordova-plugin-apprate.git",
-            "subdir": "."
-        },
-        "is_top_level": true,
-        "variables": {}
-    },
     "cordova-plugin-dialogs": {
         "source": {
             "type": "registry",

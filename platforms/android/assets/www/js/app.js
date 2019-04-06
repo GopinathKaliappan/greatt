@@ -60,7 +60,7 @@ var app = angular.module('slidebox', ['ionic', 'tabSlideBox','ngCordova', 'xml',
       }
       ]);
 
-    app.config(function($stateProvider, $urlRouterProvider, $httpProvider,$cordovaAppRateProvider) {
+    app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
 
       $stateProvider.state('index', {
         url : '/',
@@ -95,25 +95,13 @@ var app = angular.module('slidebox', ['ionic', 'tabSlideBox','ngCordova', 'xml',
       }
       ]);
     
-    app.config(function($stateProvider, $urlRouterProvider, $cordovaAppRateProvider) {
+    app.config(function($stateProvider, $urlRouterProvider) {
       $stateProvider.state('index', {
         url : '/',
         templateUrl : 'index.html',
         controller : 'IndexCtrl'
       });
-      document.addEventListener("deviceready", function () {
 
-         var prefs = {
-           language: 'en',
-           appName: 'News App Inc',
-           iosURL: '<my_app_id>',
-           androidURL: 'market://details?id=com.classic.news',
-           windowsURL: 'ms-windows-store:Review?name=<...>'
-         };
-
-         $cordovaAppRateProvider.setPreferences(prefs)
-
-     }, false);
       $urlRouterProvider.otherwise("/");
     });
     
@@ -131,6 +119,7 @@ var app = angular.module('slidebox', ['ionic', 'tabSlideBox','ngCordova', 'xml',
         }
         ])
 app.controller("Livetabs", function($http, $scope,$timeout,$ionicPlatform,$cordovaSocialSharing,$ionicSlideBoxDelegate, $ionicPopup, $cordovaInAppBrowser, $ionicLoading, $cordovaToast) {
+  $scope.imageApi = 'https://agaramnews.herokuapp.com/static/categoryimages';
 $scope.languages = [{ name: 'english'}, {name:  'tamil' }];
 
 $scope.selectLanguage= (d)=> {
@@ -201,7 +190,7 @@ $scope.liveApi = 'https://agaramnews.herokuapp.com/livetabs?language='+language
             }
   $scope.loadLive()
 })
-app.controller("FeedController", function($http, $scope,$timeout,$ionicPlatform,$cordovaSocialSharing,$ionicSlideBoxDelegate, $ionicPopup, $cordovaInAppBrowser, $ionicLoading, $cordovaAdMob, $cordovaToast, $timeout, $cordovaAppRate) {
+app.controller("FeedController", function($http, $scope,$timeout,$ionicPlatform,$cordovaSocialSharing,$ionicSlideBoxDelegate, $ionicPopup, $cordovaInAppBrowser, $ionicLoading, $cordovaAdMob, $cordovaToast, $timeout) {
 
 $scope.languages = [{ name: 'english'}, {name:  'tamil' }];
 $scope.selectLanguage = (lan) => {
@@ -226,7 +215,7 @@ $ionicPlatform.registerBackButtonAction(function () {
         // $scope.showToast('Slide to Change the page');
         if(backbutton == 0 ) {
             backbutton += 1;
-            $scope.showToast('Press again to exit');
+            $scope.showToast('Slide to change the Page');
             $scope.currentTab -= 1;   
             $timeout(function(){backbutton=0;},3000);
         } else {
@@ -276,7 +265,7 @@ $ionicPlatform.ready(function() {
   $scope.colors = [
     '#1B2631',
     '#512E5F',
-    '#DF0101',
+    '#500b0b',
     '#145A32',
     '#922B21',
     '#6E2C00',
@@ -327,6 +316,7 @@ $ionicPlatform.ready(function() {
   // let parser = new RSSParser();
   $scope.entries = [];
   $scope.api = 'https://agaramnews.herokuapp.com?url=';
+  $scope.imageApi = 'https://agaramnews.herokuapp.com/static/categoryimages';
   // $scope.api = 'http://localhost:3000?url=';
   // $scope.tabsApi = 'https://agaramnews.herokuapp.com/tabs';
   $scope.tabsApi = 'https://agaramnews.herokuapp.com/tabs?language=' +language;
@@ -418,22 +408,26 @@ $ionicPlatform.ready(function() {
 
    $scope.toggleItems = (id, status, item) => {
         if(!status) {
-          $scope.showToast('Channel ' + item.name + ' Loading ...');
+          $scope.showToast('Channel ' + item.name + ' Added ...');
           $scope.tabs.splice(2,0,item);
 
 
           // $scope.tabs.insert(2,item); 
-          window.localStorage.setItem('tabs', JSON.stringify($scope.tabs));
-          $scope.currentTab = 2;
-          // alert(window.localStorage.getItem('appRated'));
-          if(!window.localStorage.getItem('appRated'))  {
-            if($scope.tabs.length > 4) {
-              $scope.appRate();  
-            }
-          }
+
+              window.localStorage.setItem('tabs', JSON.stringify($scope.tabs));
+              $scope.currentTab = 2;
+            // alert(window.localStorage.getItem('appRated'));
+          
+              if(!window.localStorage.getItem('appRated'))  {
+                if($scope.tabs.length > 4) {
+                 $scope.appRate();  
+               }
+              }
+
+          
 
         } else {
-           $scope.showToast('Channel ' + item.name + ' Removed');
+           // $scope.showToast('Channel ' + item.name + ' Removed');
            window.localStorage.setItem(id, JSON.stringify([]));                      
            $scope.tabs = $scope.removeByKey($scope.tabs, { key: 'id', value: id })
            window.localStorage.setItem('tabs', JSON.stringify($scope.tabs));
@@ -647,43 +641,12 @@ cordova.ThemeableBrowser.open(link[Object.keys(link)[0]], '_blank', {
         color: '#003264ff',
         showPageTitle: true
     },
-    // backButton: {
-    //     wwwImage: 'img/back.png',
-    //     imagePressed: 'back_pressed',
-    //     align: 'left',
-    //     event: 'backPressed'
-    // },
     closeButton: {
         wwwImage: 'img/back.png',
         imagePressed: 'close_pressed',
         align: 'left',
         event: 'closePressed'
     },
-    // customButtons: [
-    //     {
-    //         wwwImage: 'img/share.svg.jpg',
-    //         imagePressed: 'share_pressed',
-    //         align: 'right',
-    //         event: 'sharePressed'
-    //     }
-    // ],
-    // menu: {
-    //     wwwImage: 'img/menu.svg.jpg',
-    //     imagePressed: 'menu_pressed',
-    //     title: 'Test',
-    //     cancel: 'Cancel',
-    //     align: 'right',
-    //     items: [
-    //         {
-    //             event: 'helloPressed',
-    //             label: 'Hello World!'
-    //         },
-    //         {
-    //             event: 'testPressed',
-    //             label: 'Test!'
-    //         }
-    //     ]
-    // },
     backButtonCanClose: true
 }).addEventListener('backPressed', function(e) {
     // alert('back pressed');
@@ -698,205 +661,40 @@ cordova.ThemeableBrowser.open(link[Object.keys(link)[0]], '_blank', {
 });
 
 }
-// $scope.init();
 
-
-  // $scope.tabs = [
-  //     // {
-  //     //     name: 'Live Updates',
-  //     //     url: 'https://www.news18.com/rss/india.xml',
-  //     //     icon: '',
-  //     //     color: 'green',
-  //     //     channelImage: 'https://images-na.ssl-images-amazon.com/images/I/41glolYSKtL._SY355_.png',
-  //     //     text: 'white',
-  //     //     type: '_cdata' ,
-  //     //     channel: 'menu',
-  //     //     language:'engish',
-  //     //     category: 'lifestyle',
-  //     //     id: 100
-  //     // },
-  //     {
-  //         name: 'India',
-  //         url: 'https://www.news18.com/rss/india.xml',
-  //         icon: '',
-  //         color: 'purple',
-  //         channelImage: 'https://images-na.ssl-images-amazon.com/images/I/41glolYSKtL._SY355_.png',
-  //         text: 'white',
-  //         type: '_cdata' ,
-  //         channel: 'News18',
-  //         language:'engish',
-  //         category: 'lifestyle',
-  //         id: 30
-  //     },
-  //     {
-  //         name: 'World',
-  //         url: 'https://www.news18.com/rss/world.xml',
-  //         icon: '',
-  //         color: '#C70039',
-  //         text: 'white',
-  //         type: '_cdata',
-  //         channel: 'News18',
-  //            channelImage: 'https://images-na.ssl-images-amazon.com/images/I/41glolYSKtL._SY355_.png',
-  //         language:'engish',
-  //         category: 'world',
-  //         id: 31
-  //     },
-  //     {
-  //         name: 'Cricket',
-  //         url: 'https://www.news18.com/rss/cricketnext.xml',
-  //         icon: '',
-  //         color: '#900C3F',
-  //         text: 'white',
-  //         type: '_cdata',
-  //         channel: 'News18',
-  //         channelImage: 'https://images-na.ssl-images-amazon.com/images/I/41glolYSKtL._SY355_.png',
-  //         language:'engish',
-  //         category: 'cricet',
-  //         id: 32
-  //     },
-
-  //     {
-  //         name: 'Life Style',
-  //         url: 'https://www.news18.com/rss/lifestyle.xml',
-  //         icon: '',
-  //         color: '#922B21',
-  //         text: 'white',
-  //         type: '_cdata',
-  //         channel: 'News18',
-  //         channelImage: 'https://images-na.ssl-images-amazon.com/images/I/41glolYSKtL._SY355_.png',
-  //         language:'engish',
-  //         category: 'lifestyle',
-  //         id: 33
-  //     },
-  //     {
-  //         name: 'Business',
-  //         url: 'https://www.huffpost.com/section/business/feed',
-  //         icon: '',
-  //         color: '#4A235A',
-  //         text: 'white',
-  //         type: '_cdata',
-  //         channel: 'Huffington Post',
-  //         channelImage: 'https://keratoconusinserts.com/wp-content/uploads/revslider/janbbwsite/press-logo-huffington-post.png',
-  //         language:'engish',
-  //         category: 'business',
-  //         id: 34
-  //     },
-  //     {
-  //         name: 'Movies',
-  //         url: 'https://www.news18.com/rss/movies.xml',
-  //         icon: '',
-  //         color: 'grey',
-  //         text: 'white',
-  //         type: '_cdata',
-  //         channel: 'News18',
-  //         channelImage: 'https://images-na.ssl-images-amazon.com/images/I/41glolYSKtL._SY355_.png',
-  //         language:'engish',
-  //         category: 'movies',
-  //         id: 35    
-  //     },{
-  //         name: 'One India',
-  //         url: 'https://tamil.oneindia.com/rss/tamil-art-culture-fb.xml',
-  //         icon: '',
-  //         color: 'grey',
-  //         text: 'white',
-  //         type: '_cdata',
-  //         channel: 'News18',
-  //         channelImage: 'https://feeds.feedburner.com/Puthiyathalaimurai_India_News?format=xml',
-  //         language:'engish',
-  //         category: 'movies',
-  //         id: 36   
-  //     },{
-  //         name: 'Dinamalar Frontpage',
-  //         url: 'https://feeds.feedburner.com/dinamalar/Front_page_news',
-  //         icon: '',
-  //         color: 'grey',
-  //         text: 'white',
-  //         type: '_cdata',
-  //         channel: 'News18',
-  //         channelImage: 'https://releaseadvt.com/paper_image/2017.10.06_09-52-14dinamalar-LOGO.png',
-  //         language:'engish',
-  //         category: 'movies',
-  //         id: 37   
-  //     },{
-  //         name: 'Dinamalar அரசியல் செய்திகள்',
-  //         url: 'https://rss.dinamalar.com/?cat=pot1',
-  //         icon: '',
-  //         color: 'purple',
-  //         text: 'white',
-  //         type: '_cdata',
-  //         channel: 'News18',
-  //         channelImage: 'https://releaseadvt.com/paper_image/2017.10.06_09-52-14dinamalar-LOGO.png',
-  //         language:'engish',
-  //         category: 'movies',
-  //         id: 37   
-  //     },{
-  //         name: 'Dinamalar சம்பவங்கள்',
-  //         url: 'https://rss.dinamalar.com/?cat=sam1',
-  //         icon: '',
-  //         color: 'orange',
-  //         text: 'white',
-  //         type: '_cdata',
-  //         channel: 'News18',
-  //         channelImage: 'https://releaseadvt.com/paper_image/2017.10.06_09-52-14dinamalar-LOGO.png',
-  //         language:'engish',
-  //         category: 'movies',
-  //         id: 38   
-  //     },{
-  //         name: 'Dinamalar சினிமா செய்திகள்',
-  //         url: 'https://rss.dinamalar.com/tamilnadunews.asp',
-  //         icon: '',
-  //         color: 'brown',
-  //         text: 'white',
-  //         type: '_cdata',
-  //         channel: 'News18',
-  //         channelImage: 'https://releaseadvt.com/paper_image/2017.10.06_09-52-14dinamalar-LOGO.png',
-  //         language:'engish',
-  //         category: 'movies',
-  //         id: 39   
-  //     },{
-  //         name: 'Dinamalar விளையாட்டு செய்திகள்',
-  //         url: 'https://sports.dinamalar.com/rss/',
-  //         icon: '',
-  //         color: 'brown',
-  //         text: 'white',
-  //         type: '_cdata',
-  //         channel: 'News18',
-  //         channelImage: 'https://releaseadvt.com/paper_image/2017.10.06_09-52-14dinamalar-LOGO.png',
-  //         language:'engish',
-  //         category: 'movies',
-  //         id: 40   
-  //     },{
-  //         name: 'Dinamalar Football',
-  //         url: 'https://sports.dinamalar.com/rss/Football',
-  //         icon: '',
-  //         color: 'brown',
-  //         text: 'white',
-  //         type: '_cdata',
-  //         channel: 'News18',
-  //         channelImage: 'https://releaseadvt.com/paper_image/2017.10.06_09-52-14dinamalar-LOGO.png',
-  //         language:'engish',
-  //         category: 'movies',
-  //         id: 41   
-  //     }
-  //   ];
-
-  // document.addEventListener("deviceready", function () {
-
-  //   $cordovaAppRate.promptForRating(true).then(function (result) {
-  //       // success
-  //   });
-  // }, false);
 
   $scope.appRate = () => {
-    $cordovaAppRate.promptForRating(true).then(function (result) {
-        // success
-        window.localStorage.setItem('appRated', true); 
-        window.open('https://play.google.com/store/apps/details?id=com.classic.news');
-        // cordovaAppRate.navigateToAppStore().then(function (result) {
-        // // success
-        // });
-    });
+    var myPopup = $ionicPopup.show({
+    template: '',
+    title: 'Do you like News App Inc',
+    subTitle: 'Help us to improve with your ratings.',
+    scope: $scope,
+    buttons: [
+      {
+        text: '<b>No </b>',
+        type: 'button-positive',
+        onTap: function(e) {
+          myPopup.close();
+           // window.open('https://play.google.com/store/apps/details?id=com.classic.news');
+        }
+      },
+      {
+        text: '<b>Yes , Rate App</b>',
+        type: 'button-balanced',
+        onTap: function(e) {
+           window.localStorage.setItem('appRated', true); 
+           window.open('https://play.google.com/store/apps/details?id=com.classic.news');
+        }
+      }
+    ]
+  });
+
+  myPopup.then(function(res) {
+    console.log('Tapped!', res);
+  });
+
   }
+  // $scope.appRate();
 
 
 
@@ -912,4 +710,4 @@ app.directive('onErrorSrc', function() {
           });
         }
     }
-});;
+});
