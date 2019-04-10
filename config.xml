@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget android-versionCode="1009" id="com.classic.news" version="1009" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>MyApp</name>
-    <description>An awesome Ionic/Cordova app.</description>
-    <author email="theclassiccreations@gmail.com" href="http://ionicframework.com/">Ionic Framework Team</author>
+<widget android-versionCode="1015" id="com.classic.news" version="1015" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>News App Inc</name>
+    <description>An awesome news app.</description>
+    <author email="theclassiccreations@gmail.com" href="http://ionicframework.com/">Classic Creations Team </author>
     <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />

@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="format-detection" content="telephone=no" />
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
-    <title>News App Inc</title>
+    <title>Daily News Updates</title>
 
     <!-- ionic css -->
     <link href="lib/ionic/css/ionic.css" rel="stylesheet">
@@ -116,7 +116,7 @@
            
         >
               
-            <div class="image-divider" ng-click="viewnews(entry.link)">
+            <div class="image-divider" ng-click="viewnews(entry.link, entry)">
                 <img ng-src="{{entry.img || entry.enclosure._attributes.url }}" on-error-src="img/loading.gif" style="width: 100%"/>
             </div>
             <div class="font-medium text-align-left  text-limit-4" ng-click="viewnews(entry.link)">
@@ -130,12 +130,30 @@
                         <div  class="text-left date-text" >
                {{ entry.pubDate._text  }}</div> 
                <!-- <div  class="copyright">{{entry.copyright._text}}</div> -->
-                              <i ng-click="sharenews(entry.title._cdata, entry.title._cdata, entry.img, entry.link._cdata )" class="icon ion-share icon-common red" ></i>
+                              <i ng-click="sharenews(entry)" class="icon ion-share icon-common red" ></i>
             </div>
               
             </div> 
             <div ng-if="tab.type === 'menu' && tab.id=== 1000 " ng-controller="Livetabs">
+              
+
+              <div ng-if="!tabListing" >  
+      <img src="img/preload.gif" style="width: 20%">
+      <div><span> Loading ...</span></div>  
+  </div>
               <div class="">
+              <div class="list language-container" ng-if="languages" > 
+
+  <label class="item item-input item-select">
+    <div class="input-label">
+      Choose Language
+    </div>
+<select ng-options="item as item.label for item in languages track by item.id" ng-model="selectedLanguage" ng-change="selectLanguage(selectedLanguage)"></select>
+  </label>
+
+</div>
+                <!-- 
+            <div ng-if="liveTabs.length > 0" class="video-container"><iframe width="853" height="480" src="https://www.youtube.com/embed/z9Ul9ccDOqE" frameborder="0" allowfullscreen></div> -->
 
                   <div ng-repeat="tt in liveTabs track by $index" class="col-md-6  pad-5 half-width-2 " ng-click="viewlistnews(tt.url)">
                   <div class="item item-text-wrap news-card">
@@ -151,23 +169,22 @@
      
 
         </div>
+
         <div ng-if="tab.type === 'menu' && tab.id=== 1001 " >
-<!-- 
-        <ion-list>
-        <ion-item ng-repeat="t in tabListing track by $index" class="item text-left channel-card"> 
-
-         <div class="channel-card-divider" ng-click="toggleItems(t.id, isPresent(t.id), t)">
-            <h2>{{t.name}} -<span style="color: {{colors[$index]}};" class="channel-text">{{t.channel}}</span></h2><i ng-if="isPresent(t.id)" class ="icon ion-checkmark-circled green tick-icon"></i><i ng-if="!isPresent(t.id)" class ="icon ion-checkmark-circled tick-icon"></i>
-         </div>
-        
-     
-
-            </ion-item>
-</ion-list> -->
   <div ng-if="!tabListing" >  
-      <img src="{{imageApi+'/'+ 'preload.gif'}}">
+      <img src="img/preload.gif" style="width: 20%">
       <div><span> Loading ...</span></div>  
   </div>
+<div class="list language-container" ng-if="languages" > 
+
+  <label class="item item-input item-select">
+    <div class="input-label">
+      Choose Language
+    </div>
+<select ng-options="item as item.label for item in languages track by item.id" ng-model="selectedLanguage" ng-change="selectLanguage(selectedLanguage)"></select>
+  </label>
+
+</div>
 <div class="container" ng-repeat="t in tabListing track by $index" class="item text-left channel-card">
 
   <div class="content" ng-click="toggleItems(t.id, isPresent(t.id), t)">
@@ -187,7 +204,7 @@
 
    <ion-item   class="load-more">
    
-    <span ng-click="loadMore()" ng-if="pageCount*15 <= data[currentIndex].length"> Load More Updates</span>
+    <span ng-click="loadMore()" ng-if="pageCount * 15 <= data[currentIndex].length"> Load More Updates</span>
     <span ng-if="pageCount*15 >= data[currentIndex].length"> No more data stay tunned
         <div style="margin-top: 50px">
             <img src="https://qrs.in/frontent/images/noresult.png" style="width: 70%" />

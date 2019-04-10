@@ -17,7 +17,12 @@ var language = 'english';
 
  }
 
-
+var imageLoader = (items) => {
+      items.map((item)=> {
+          var img = new Image();
+          img.src = item.channelImage; 
+      })
+}
 
 
 
@@ -120,11 +125,28 @@ var app = angular.module('slidebox', ['ionic', 'tabSlideBox','ngCordova', 'xml',
         ])
 app.controller("Livetabs", function($http, $scope,$timeout,$ionicPlatform,$cordovaSocialSharing,$ionicSlideBoxDelegate, $ionicPopup, $cordovaInAppBrowser, $ionicLoading, $cordovaToast) {
   $scope.imageApi = 'https://agaramnews.herokuapp.com/static/categoryimages';
-$scope.languages = [{ name: 'english'}, {name:  'tamil' }];
+$scope.languages = [{
+        label: 'English',
+        value: 'english',
+        id: 'english'
+    },{
+        label: 'Tamil',
+        value: 'tamil',
+        id: 'tamil'
+    },{
+        label: 'All',
+        value: 'all',
+        id: 'all'
+    }];
+ $scope.selectedLanguage = language;
+$scope.selectLanguage = (lan) => {
 
-$scope.selectLanguage= (d)=> {
+  $scope.selectedLanguage = lan.id;
+  $scope.loadLive();
+  
   
 }
+
 
 
 $scope.viewlistnews=function(link)
@@ -148,11 +170,48 @@ cordova.ThemeableBrowser.open(link, '_blank', {
     //     align: 'left',
     //     event: 'backPressed'
     // },
+    // backButton: {
+    //     image: 'back',
+    //     imagePressed: 'back_pressed',
+    //     align: 'left',
+    //     event: 'backPressed'
+    // },
+    forwardButton: {
+        wwwImage: 'img/forward',
+        imagePressed: 'forward_pressed',
+        align: 'left',
+        event: 'forwardPressed'
+    },
     closeButton: {
         wwwImage: 'img/back.png',
         imagePressed: 'close_pressed',
         align: 'left',
         event: 'closePressed'
+    },
+    customButtons: [
+        {
+            wwwImage: 'img/menu',
+            imagePressed: 'share_pressed',
+            align: 'right',
+            event: 'sharePressed'
+        }
+    ],
+    menu: {
+        image: 'menu',
+        imagePressed: 'menu_pressed',
+        title: 'Test',
+        cancel: 'Cancel',
+        align: 'right',
+        items: [
+            {
+                event: 'helloPressed',
+                label: 'Hello World!'
+            },
+            {
+                event: 'testPressed',
+                label: 'Test!'
+            }
+        ]
     },
     backButtonCanClose: true
 }).addEventListener('backPressed', function(e) {
@@ -163,23 +222,31 @@ cordova.ThemeableBrowser.open(link, '_blank', {
     // $scope.sharenews(e);
 }).addEventListener(cordova.ThemeableBrowser.EVT_ERR, function(e) {
     console.error(e.message);
+    
 }).addEventListener(cordova.ThemeableBrowser.EVT_WRN, function(e) {
     console.log(e.message);
+    
 });
 
 } 
-$scope.liveApi = 'https://agaramnews.herokuapp.com/livetabs?language='+language
+
   $scope.loadLive = (dataId) => {
 
+$scope.liveApi = 'https://agaramnews.herokuapp.com/livetabs?language='+$scope.selectedLanguage
               if(window.localStorage.getItem('liveTabs') !== undefined) {
+                    try {
                      $scope.liveTabs = JSON.parse(window.localStorage.getItem('liveTabs'));
-              
+                     $scope.languages = $scope.liveTabs[0].languages;                 
+                   } catch (e) {
+
+                   }
+                     
               }
               fetch($scope.liveApi).then((res)=> res.json()).then((result) =>{
                  
                  $scope.$apply( () => {
                     $scope.liveTabs=result; 
-
+                    $scope.languages = $scope.liveTabs[0].languages;
                  })
                  if($scope.liveTabs) {
 
@@ -192,13 +259,30 @@ $scope.liveApi = 'https://agaramnews.herokuapp.com/livetabs?language='+language
 })
 app.controller("FeedController", function($http, $scope,$timeout,$ionicPlatform,$cordovaSocialSharing,$ionicSlideBoxDelegate, $ionicPopup, $cordovaInAppBrowser, $ionicLoading, $cordovaAdMob, $cordovaToast, $timeout) {
 
-$scope.languages = [{ name: 'english'}, {name:  'tamil' }];
+$scope.languages = [{
+        label: 'English',
+        value: 'english',
+        id: 'english'
+    },{
+        label: 'Tamil',
+        value: 'tamil',
+        id: 'tamil'
+    },{
+        label: 'All',
+        value: 'all',
+        id: 'all'
+    }];
+$scope.selectedLanguage = language;
 $scope.selectLanguage = (lan) => {
-    language = lan;
-    // alert(lan);
-    // $scope.loadLive
+  // $scope.selectedLanguage = lan;
+  $scope.selectedLanguage = lan.id;
+  $scope.showPopup();
+  // $scope.loadLive();
+  $scope.showToast('Loading ... ' + lan.label);
+  
+  
 }
-
+$scope.currentNews = {};
 $scope.currentTab = 0;
 $scope.showToast = function (message) {
     $cordovaToast
@@ -319,7 +403,7 @@ $ionicPlatform.ready(function() {
   $scope.imageApi = 'https://agaramnews.herokuapp.com/static/categoryimages';
   // $scope.api = 'http://localhost:3000?url=';
   // $scope.tabsApi = 'https://agaramnews.herokuapp.com/tabs';
-  $scope.tabsApi = 'https://agaramnews.herokuapp.com/tabs?language=' +language;
+  $scope.tabsApi = 'https://agaramnews.herokuapp.com/tabs?language=';
   // $scope.tabsApi = 'http://localhost:3000/tabs';
   $scope.pagination = '&page=0count=20';
   $scope.apiKey = '&api_key=hpi0ghvdfyy5xbbiwuruga2i6p49cnf0jilgt3dg';
@@ -408,26 +492,24 @@ $ionicPlatform.ready(function() {
 
    $scope.toggleItems = (id, status, item) => {
         if(!status) {
-          $scope.showToast('Channel ' + item.name + ' Added ...');
-          $scope.tabs.splice(2,0,item);
-
-
-          // $scope.tabs.insert(2,item); 
-
-              window.localStorage.setItem('tabs', JSON.stringify($scope.tabs));
-              $scope.currentTab = 2;
-            // alert(window.localStorage.getItem('appRated'));
           
-              if(!window.localStorage.getItem('appRated'))  {
-                if($scope.tabs.length > 4) {
-                 $scope.appRate();  
-               }
-              }
+          $scope.tabs.splice(2,0,item);
+          window.localStorage.setItem('tabs', JSON.stringify($scope.tabs));
+          $scope.currentTab = 2;
+            
+          
+        if(!window.localStorage.getItem('appRated') && $scope.tabs.length > 4)  {
+        
+            $scope.appRate();  
+                 
+        } else {
+            $scope.showToast('Channel ' + item.name + ' Loading...');
+        }
 
           
 
         } else {
-           // $scope.showToast('Channel ' + item.name + ' Removed');
+           $scope.showToast('Channel ' + item.name + ' Removed');
            window.localStorage.setItem(id, JSON.stringify([]));                      
            $scope.tabs = $scope.removeByKey($scope.tabs, { key: 'id', value: id })
            window.localStorage.setItem('tabs', JSON.stringify($scope.tabs));
@@ -442,63 +524,27 @@ $ionicPlatform.ready(function() {
 
     $scope.showPopup = function() {
       // $scope.data = {}
-        fetch($scope.tabsApi).then((res)=> res.json()).then((response)=> {
+        fetch($scope.tabsApi  + $scope.selectedLanguage).then((res)=> res.json()).then((response)=> {
           console.log(response)
               $scope.$apply( () => {
+                              imageLoader(response);
                               $scope.tabListing = response;
+                              $scope.languages = $scope.tabListing[0].languages; 
+                              // alert($scope.languages.length);
                               // window.localStorage.setItem('tabs', JSON.stringify($scope.tabs));
              })   
         })
-      // Custom popup
-//       $scope.myPopup = $ionicPopup.show({
-//          template: `<ion-view> 
-//          <ion-content overflow-scroll="true" has-bouncing="true" class="top-space"> 
-//                        <i class="icon ion-android-close close-new" ng-click="closePopup()"></i> 
-                       
-//                         <div class="list-news">
-// <ion-list>                          
-//   <div ng-repeat="t in tabListing" class="item item-avatar text-left" ng-click="toggleItems(t.id, isPresent(t.id), t)"> 
-//     <img ng-src="{{t.channelImage}}">
-//     <h2>{{t.name}}</h2>
-//     <h3>{{t.channel}} <i ng-if="isPresent(t.id)" class ="icon ion-checkmark green"></i><i ng-if="!isPresent(t.id)" class ="icon ion-checkmark"></i></h3>
      
-
-// </div>
-// </ion-list>
-//                         </ion-content>
-//                        </ion-view>
-//                         `,
-//          title: 'Add New Channels',
-//          subTitle: 'Add your favourite channels stay updated',
-//          scope: $scope,
-//       });
-
-//       $scope.myPopup.then(function(res) {
-//          console.log('Tapped!', res);
-//       });    
       };
       $scope.showPopup(); 
-      // $scope.closePopup =() => {
-      //   window.location.reload();
-        
-      //   $scope.myPopup.close();
-      // }
+     
    $scope.loadTabs = () => {
 
       if(window.localStorage.getItem('tabs') === null) {
           $scope.tabs = tabs;
           window.localStorage.setItem('tabs', JSON.stringify($scope.tabs));
           $scope.currentTab = 0;
-          // fetch($scope.tabsApi).then((res)=> res.json()).then((response)=> {
-          //   $scope.$apply( () => {
-          //     // $scope.tabs = response;
-          //     response.map((data, index)=> {
-          //         $scope.tabs.push(data);    
-          //     });
-          //     window.localStorage.setItem('tabs', JSON.stringify($scope.tabs));
-          //     // $scope.loadData({ index: $scope.tabs[0].id });  
-          //   }) 
-          // }) 
+     
       } else {
         // alert(1)
              $scope.tabs = JSON.parse(window.localStorage.getItem('tabs'));
@@ -535,6 +581,7 @@ $ionicPlatform.ready(function() {
                     }) 
 
                 } catch(e) {
+                  // alert()
                         fetch($scope.tabsApi).then((res)=> res.json()).then((response)=> {
                               $scope.$apply( () => {
                               $scope.tabListing = response;
@@ -569,11 +616,20 @@ try {
 
 
 
-$scope.sharenews=function(message,subject,image = '', link){
-
+$scope.sharenews=function(entry){
+ let description = entry.description[Object.keys(entry.description)[0]]; 
+ let message = entry.title[Object.keys(entry.title)[0]] 
+ let link = entry.link[Object.keys(entry.link)[0]] 
+ let image = "";
+ if(entry.img != "") {
+   image = entry.img; 
+ } else {
+   image = entry.enclosure._attributes.url; 
+ }
+ // image = entry.title[Object.keys(message.title)[0]]; 
  $ionicLoading.show({template: 'Loading ...'}); 
  $cordovaSocialSharing
-    .share(message, subject, image, link) // Share via native share sheet
+    .share('Daily News', message, image, link) // Share via native share sheet
     .then(function(result) {
       $ionicLoading.hide();
       // Success!
@@ -613,8 +669,9 @@ $scope.shareFacebook = (message, image, link) => {
     });
 }
 
-$scope.viewnews=function(link)
+$scope.viewnews=function(link, news)
 {
+$scope.currentNews = news;
   // $ionicLoading.show({ template: 'Loading ...'});
   // setTimeout(()=> {
   //   $ionicLoading.hide();
@@ -641,18 +698,51 @@ cordova.ThemeableBrowser.open(link[Object.keys(link)[0]], '_blank', {
         color: '#003264ff',
         showPageTitle: true
     },
+    forwardButton: {
+        wwwImage: 'img/forward',
+        imagegePressed: 'forward_pressed',
+        align: 'left',
+        event: 'forwardPressed'
+    },
     closeButton: {
         wwwImage: 'img/back.png',
         imagePressed: 'close_pressed',
         align: 'left',
         event: 'closePressed'
     },
-    backButtonCanClose: true
+    customButtons: [
+        {
+            wwwImage: 'img/share.png',
+            imagePressed: 'share_pressed',
+            align: 'right',
+            event: 'sharePressed'
+        }
+    ],
+    // menu: {
+    //     wwwImage: 'img/menu.png',
+    //     imagePressed: 'menu_pressed',
+    //     title: 'Test',
+    //     cancel: 'Cancel',
+    //     align: 'right',
+    //     items: [
+    //         {
+    //             event: 'helloPressed',
+    //             label: 'Hello World!'
+    //         },
+    //         {
+    //             event: 'testPressed',
+    //             label: 'Test!'
+    //         }
+    //     ]
+    // },
+    backButtonCanClose: true,
+
 }).addEventListener('backPressed', function(e) {
     // alert('back pressed');
 }).addEventListener('helloPressed', function(e) {
     // alert('hello pressed');
 }).addEventListener('sharePressed', function(e) {
+  $scope.sharenews($scope.currentNews);
     // $scope.sharenews(e);
 }).addEventListener(cordova.ThemeableBrowser.EVT_ERR, function(e) {
     console.error(e.message);
@@ -711,3 +801,132 @@ app.directive('onErrorSrc', function() {
         }
     }
 });
+app.directive('mySelect', function($window) {
+    function main(scope, element, attrs) {
+        console.log('mySelect directive');
+
+        // Selecting model value
+        for (var idx in scope.ops) {
+            if (scope.ops[idx].value == scope.selection) {
+                scope.selectedOpt = scope.ops[idx];
+            }
+        }
+
+        // Is a mobile device
+        var isMobile = false;
+        if (/ipad|iphone|android/gi.test($window.navigator.userAgent)) {
+            isMobile = true;
+        }
+
+        // Select an option
+        scope.selectOpt = function(opt) {
+            scope.selection = opt.value;
+            //scope.selectedOpt = opt;
+            optionsDom.removeClass('active');
+            backdrop.removeClass('active');
+        };
+
+        scope.$watch('selection', function(newVal) {
+            for (var idx in scope.ops) {
+                if (scope.ops[idx].value == newVal) {
+                    scope.selectedOpt = scope.ops[idx];
+                }
+            }
+        });
+
+        // DOM References
+        var labelDom = element.find('.my-select-label');
+        var optionsDom = element.find('.my-select-ops');
+        var backdrop = element.find('.my-select-backdrop');
+        var mobileSelect = element.find('select');
+
+        // DOM Event Listeners
+        labelDom.on('click', function() {
+            rePositionOps();
+            optionsDom.toggleClass('active');
+            backdrop.toggleClass('active');
+        });
+        backdrop.on('click', function() {
+            optionsDom.removeClass('active');
+            backdrop.removeClass('active');
+        });
+        element.on('keydown', function(ev) {
+            switch (ev.which) {
+                case 37: // left arrow
+                case 38: // top arrow
+                    preSelectPrev();
+                    break;
+                case 39: // right arrow
+                case 40: // down arrow
+                    preSelectNext();
+                    break;
+                case 13: // enter key
+                    preSelectPush();
+            }
+        });
+
+        // Initialization
+        rePositionOps();
+        $($window).on('resize', function() {
+            rePositionOps();
+        });
+        if (isMobile) {
+            mobileSelect.addClass('active');
+        }
+
+        // Positioning options
+        function rePositionOps() {
+            optionsDom.width(labelDom.width());
+            optionsDom.css({
+                top: labelDom.offset().top + labelDom.outerHeight(),
+                left: labelDom.offset().left
+            });
+            // Mobile ops
+            mobileSelect.width(labelDom.outerWidth());
+            mobileSelect.height(labelDom.outerHeight());
+            mobileSelect.css({
+                top: labelDom.offset().top,
+                left: labelDom.offset().left
+            });
+        }
+
+        // PreSelection logic:
+        //  This controls option selecting and highlighting by pressing the arrow
+        //  keys.
+        var preSelected = 0;
+
+        function updatePreSelection() {
+            optionsDom.children().filter('.preselected').removeClass('preselected');
+            optionsDom.find('div').eq(preSelected).addClass('preselected');
+            console.log(preSelected);
+        }
+        updatePreSelection();
+
+        function preSelectNext() {
+            console.log(scope.ops.length);
+            preSelected = (preSelected + 1) % scope.ops.length;
+            updatePreSelection();
+        }
+
+        function preSelectPrev() {
+            console.log(scope.ops.length);
+            preSelected = (preSelected - 1) % scope.ops.length;
+            updatePreSelection();
+        }
+
+        function preSelectPush() {
+            scope.selectOpt(scope.ops[preSelected]);
+            scope.$apply();
+        }
+    }
+
+    return {
+        link: main,
+        scope: {
+            ops: '=mySelect',
+            selection: '=selection'
+        },
+        template: '<div class="my-select-label" tabindex="0" title="{{selectedOpt.label}}"><span class="my-select-label-text">{{selectedOpt.label}}</span><span class="my-select-caret"><svg viewBox="0 0 100 60"><polyline points="10,10 50,50 90,10" style="fill:none;stroke:white;stroke-width:8;stroke-linecap:round;"/></svg></span></div><div class="my-select-backdrop"></div><div class="my-select-ops"><div ng-repeat="o in ops" ng-click="selectOpt(o)">{{o.label}}</div></div><select ng-options="opt.value as opt.label for opt in ops" ng-model="selection"></select>'
+    };
+})
+;

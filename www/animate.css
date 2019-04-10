@@ -11,7 +11,7 @@
 
 @font-face {
   font-family: 'Circular-Medium';
-  src: url('HelveticaNeue-Medium.woff');
+  src: url('HelveticaNeue-Extended.otf');
 }
 
 body {
@@ -3387,16 +3387,31 @@ body {
   width: 100% !important;
   
 }
+
 .common-divider:nth-child(3n) .text-limit-2 {
     width: 100%;
     display: block;
     height: 75px;
 }
 .common-divider:nth-child(3n) .image-divider {
-    width: 100%;
-    display: block;
+    width: 60%;
+    display: inline-block;
 }
+.common-divider:nth-child(3n) .text-limit-4 {
+    display: inline-block;
+    width: 38%;
+    vertical-align: top;
+    max-height: 142px;
+    min-height: 142px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 7;
+}
+/*.common-divider:last-child {
 
+  width: 100% !important;
+  
+}*/
 @-webkit-keyframes active {
   from {opacity: 0;}
   to {opacity: 1;}
