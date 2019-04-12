@@ -570,9 +570,13 @@ p img
   width: 50%;
 }
 @media screen and (max-width: 640px){
-  .container{
+  /*.container{
     display: block;
     width: 100%;
+  }*/
+  .container{
+    display: inline-block;
+        width: 49%;
   }
 }
 
@@ -590,7 +594,7 @@ p img
 
 .content {
   position: relative;
-  width: 100%;
+  width: 98%;
   max-width: 400px;
   margin: auto;
   overflow: hidden;

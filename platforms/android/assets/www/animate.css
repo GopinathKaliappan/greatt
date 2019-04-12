@@ -3359,8 +3359,10 @@ body {
   -webkit-box-orient: vertical;
 }
 .text-limit-4 {
-        max-height: 82px;
+ max-height: 82px;
         min-height: 79px;
+        margin-bottom: 6px;
+        padding: 2px 9px;
         overflow: hidden;
         text-overflow: ellipsis;
         display: -webkit-box;
@@ -3368,7 +3370,7 @@ body {
         -webkit-box-orient: vertical;
 }
 .custom-column {
-  padding: 5px !important;
+  padding: 1px !important;
   margin: 0px !important; 
 }
 .common-border {
