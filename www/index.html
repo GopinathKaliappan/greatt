@@ -121,7 +121,7 @@
 
               
             <div class="image-divider" ng-click="viewnews(entry.link, entry)">
-                <img ng-src="{{entry.img || entry.enclosure._attributes.url }}" on-error-src="img/loading.gif" style="width: 100%"/>
+                <img ng-src="{{entry.img || entry.enclosure._attributes.url  || entry.image._text }}" on-error-src="img/loading.gif" style="width: 100%; min-height: 150px"/>
             </div>
             <div class="font-medium text-align-left  text-limit-4" ng-click="viewnews(entry.link)">
 
@@ -138,16 +138,26 @@
                {{ entry.pubDate._text  }}</div> 
                <!-- <div  class="copyright">{{entry.copyright._text}}</div> -->
                               <i ng-click="sharenews(entry)" class="icon ion-share icon-common red" ></i>
+                              <!-- <i style="color:#4ebb57" ng-click="download(entry.img)" class="icon ion-android-download icon-common red" ></i> -->
             </div>
               
             </div> 
             <div ng-if="tab.type === 'menu' && tab.id=== 1000 " ng-controller="Livetabs">
-              
+  <ion-tabs class="tabs-assertive tabs-icon-top">
 
-              <div ng-if="!tabListing" >  
-      <img src="img/preload.gif" style="width: 20%">
-      <div><span> Loading ...</span></div>  
-  </div>
+  <ion-tab title="Live" icon-on="ion-ios-filing ion-social-youtube" icon-off="ion-ios-filing-outline ion-social-youtube">
+<div>
+      <div class="video-container">
+                
+                <iframe id="video" ng-src="{{videoSource}}" frameborder="0" allowfullscreen></iframe>
+              </div>
+ </div>
+  </ion-tab>
+
+  
+
+  <ion-tab title="News Paper" icon-on="ion-ios-filing ion-paper" icon-off="ion-ios-filing ion-paper">
+    
               <div class="">
               <div class="list language-container" ng-if="languages" > 
 
@@ -173,6 +183,13 @@
                
               </div>
             </div>
+  </ion-tab>
+
+</ion-tabs>        
+              <div ng-if="!tabListing" >  
+      <img src="img/preload.gif" style="width: 20%">
+      <div><span> Loading ...</span></div>  
+  </div>
      
 
         </div>

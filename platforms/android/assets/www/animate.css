@@ -3359,8 +3359,8 @@ body {
   -webkit-box-orient: vertical;
 }
 .text-limit-4 {
- max-height: 82px;
-        min-height: 79px;
+ /*max-height: 82px;*/
+        /*min-height: 79px;*/
         margin-bottom: 6px;
         padding: 2px 9px;
         overflow: hidden;

@@ -77,7 +77,7 @@ module.exports.metadata =
     "cordova-plugin-statusbar": "2.1.3",
     "cordova-plugin-themeablebrowser": "0.2.17",
     "cordova-plugin-whitelist": "1.2.2",
-    "cordova-plugin-x-socialsharing": "5.1.3",
+    "cordova-plugin-x-socialsharing": "5.1.7",
     "cordova-plugin-x-toast": "2.7.2"
 };
 // BOTTOM OF METADATA

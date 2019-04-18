@@ -26,7 +26,7 @@ var imageLoader = (items) => {
 
 
 
-var app = angular.module('slidebox', ['ionic', 'tabSlideBox','ngCordova', 'xml', 'rss-parser'])
+var app = angular.module('slidebox', ['ionic', 'tabSlideBox','ngCordova', 'xml', 'rss-parser', 'ngSanitize'])
     .run(['$q', '$http', '$rootScope', '$location', '$window', '$timeout', 
           function($q, $http, $rootScope, $location, $window, $timeout,$ionicPlatform){
       
@@ -257,8 +257,9 @@ $scope.liveApi = 'https://agaramnews.herokuapp.com/livetabs?language='+$scope.se
             }
   $scope.loadLive()
 })
-app.controller("FeedController", function($http, $scope,$timeout,$ionicPlatform,$cordovaSocialSharing,$ionicSlideBoxDelegate, $ionicPopup, $cordovaInAppBrowser, $ionicLoading, $cordovaAdMob, $cordovaToast, $timeout) {
+app.controller("FeedController", function($http, $scope,$timeout,$ionicPlatform,$cordovaSocialSharing,$ionicSlideBoxDelegate, $ionicPopup, $cordovaInAppBrowser, $ionicLoading, $cordovaAdMob, $cordovaToast, $timeout, $sce) {
 
+$scope.videoSource = $sce.trustAsResourceUrl("https://www.youtube.com/embed/lrX6ktLg8WQ");
 $scope.languages = [{
         label: 'English',
         value: 'english',
@@ -282,6 +283,21 @@ $scope.selectLanguage = (lan) => {
   
   
 }
+
+$scope.download = function(url) {
+      $http.get(url, {
+          responseType: "arraybuffer"
+        })
+        .success(function(data) {
+          var anchor = angular.element('<a/>');
+          var blob = new Blob([data]);
+          anchor.attr({
+            href: window.URL.createObjectURL(blob),
+            target: '_blank',
+            download: 'fileName.png'
+          })[0].click();
+        })
+    }
 $scope.currentNews = {};
 $scope.currentTab = 0;
 $scope.showToast = function (message) {
@@ -623,8 +639,10 @@ $scope.sharenews=function(entry){
  let image = "";
  if(entry.img != "") {
    image = entry.img; 
- } else {
+ } else if(entry.enclosure._attributes.url){
    image = entry.enclosure._attributes.url; 
+ } else if(entry.image._text){
+   image = entry.image._text; 
  }
  // image = entry.title[Object.keys(message.title)[0]]; 
  $ionicLoading.show({template: 'Loading ...'}); 
