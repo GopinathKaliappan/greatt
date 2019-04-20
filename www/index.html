@@ -146,22 +146,50 @@
   <ion-tabs class="tabs-assertive tabs-icon-top">
 
   <ion-tab title="Live" icon-on="ion-ios-filing ion-social-youtube" icon-off="ion-ios-filing-outline ion-social-youtube">
+<ion-content class="new-scrool">
+
 <div>
       <div class="video-container">
-                
-                <iframe id="video" ng-src="{{videoSource}}" frameborder="0" allowfullscreen></iframe>
+                <iframe ng-if="currentIndex === 1000" id="video" ng-src="{{videoSource}}" frameborder="0" allowfullscreen autoplay></iframe>
               </div>
  </div>
+ <div class="list language-container" ng-if="languages" > 
+
+  <label class="item item-input item-select full_width_force">
+    <div class="input-label">
+      Choose Language
+    </div>
+<select ng-options="item as item.label for item in languages track by item.id" ng-model="selectedLanguage" ng-change="selectLiveStream(selectedLanguage)"></select>
+  </label>
+
+</div>
+<div style="margin-bottom: 30px;">
+ <!-- <ion-scroll id="ionScrollRegion" direction="x" class="new-scrool"> -->
+      <!-- <div id="content" > -->
+        <div ng-click="loadStream(item.url)"  ng-repeat="item in liveStreams" class="col-md-5  pad-5 half-width-2 relative-e" >
+            <div class="live"> </div>
+                  <div class="item-text-wrap news-card">
+                  <img ng-src="{{item.channelImage}}" class="img-video" />
+                                      <div style="padding: 8px 0px;" class="text-center">{{item.name}}</div>
+
+                  </div>
+
+               
+              </div>
+      <!-- </div> -->
+    <!-- </ion-scroll> -->
+    </div>
+ </ion-content>
   </ion-tab>
 
   
 
   <ion-tab title="News Paper" icon-on="ion-ios-filing ion-paper" icon-off="ion-ios-filing ion-paper">
-    
-              <div class="">
+    <ion-content>
+              <div class="" style="margin-top: 50px;margin-bottom: 50px;">
               <div class="list language-container" ng-if="languages" > 
 
-  <label class="item item-input item-select">
+  <label class="item item-input item-select full_width_force">
     <div class="input-label">
       Choose Language
     </div>
@@ -183,6 +211,7 @@
                
               </div>
             </div>
+            </ion-content>
   </ion-tab>
 
 </ion-tabs>        
@@ -201,7 +230,7 @@
   </div>
 <div class="list language-container" ng-if="languages" > 
 
-  <label class="item item-input item-select">
+  <label class="item item-input item-select full_width_force">
     <div class="input-label">
       Choose Language
     </div>

@@ -138,11 +138,19 @@ $scope.languages = [{
         value: 'all',
         id: 'all'
     }];
+ $scope.liveStreams = [];
  $scope.selectedLanguage = language;
 $scope.selectLanguage = (lan) => {
 
   $scope.selectedLanguage = lan.id;
   $scope.loadLive();
+  
+  
+}
+$scope.selectLiveStream = (lan) => {
+
+  $scope.selectedLanguage = lan.id;
+  $scope.loadLiveStream();
   
   
 }
@@ -255,19 +263,60 @@ $scope.liveApi = 'https://agaramnews.herokuapp.com/livetabs?language='+$scope.se
                  }
               })                   
             }
-  $scope.loadLive()
+  $scope.loadLive();
+
+  $scope.loadLiveStream = (dataId) => {
+
+$scope.liveStreamApi = 'https://agaramnews.herokuapp.com/live-stream?language='+$scope.selectedLanguage
+              if(window.localStorage.getItem('liveStreams') !== undefined) {
+                    try {
+                     $scope.liveStreams = JSON.parse(window.localStorage.getItem('liveStreams'));
+                     $scope.languages = scope.liveStreams[0].languages;                 
+                   } catch (e) {
+
+                   }
+                     
+              }
+              fetch($scope.liveStreamApi).then((res)=> res.json()).then((result) =>{
+                 
+                 $scope.$apply( () => {
+                    $scope.liveStreams=result; 
+                    $scope.languages = $scope.liveTabs[0].languages;
+                 })
+                 if($scope.liveTabs) {
+
+                      window.localStorage.setItem('liveStreams', JSON.stringify($scope.liveStream));
+              
+                 }
+              })                   
+            }
+  $scope.loadLiveStream()
 })
-app.controller("FeedController", function($http, $scope,$timeout,$ionicPlatform,$cordovaSocialSharing,$ionicSlideBoxDelegate, $ionicPopup, $cordovaInAppBrowser, $ionicLoading, $cordovaAdMob, $cordovaToast, $timeout, $sce) {
+app.controller("FeedController", function($http, $scope,$timeout,$ionicPlatform,$cordovaSocialSharing,$ionicSlideBoxDelegate, $ionicPopup, $cordovaInAppBrowser, $ionicLoading, $cordovaAdMob, $cordovaToast, $timeout, $sce,$ionicScrollDelegate) {
 
 $scope.videoSource = $sce.trustAsResourceUrl("https://www.youtube.com/embed/lrX6ktLg8WQ");
+$scope.loadStream = function(stream) {
+
+    $scope.videoSource = $sce.trustAsResourceUrl(stream);
+    $ionicScrollDelegate.scrollTop();
+}
+
 $scope.languages = [{
         label: 'English',
         value: 'english',
         id: 'english'
     },{
-        label: 'Tamil',
+        label: 'தமிழ்',
         value: 'tamil',
         id: 'tamil'
+    },{
+        label: 'മലയാള',
+        value: 'മലയാള',
+        id: 'മലയാള'
+    },{
+        label: 'हिंदी',
+        value: 'hindi',
+        id: 'hindi'
     },{
         label: 'All',
         value: 'all',
@@ -443,7 +492,7 @@ $ionicPlatform.ready(function() {
         id: 1001
       },
       {
-        name: 'News Paper',
+        name: 'News Live',
         url: 'https://tamil.samayam.com/',
         icon: '',
         color: 'green',
