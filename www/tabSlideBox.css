@@ -1,3 +1,4 @@
+
 body{
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
@@ -81,7 +82,7 @@ body{
 }
 .tsb-hscroll.scroll-view {
   font-size: 0.5em;
-  height: 52px;
+  /*height: 67px;*/
   white-space: nowrap;
   margin:0 auto;
 }
@@ -207,10 +208,10 @@ body {
 height:100%;
 }
 .tabbed-slidebox .tsb-icons {
-    background-color: #fafafa;
-    text-align: center;
-    margin: 3px;
-    position: relative;
+   background-color: #500B14;
+   text-align: center;
+   margin: 3px;
+   position: relative;
 }
 .pane, .view {
     position: absolute;
@@ -229,6 +230,7 @@ height:100%;
     white-space: nowrap;
     color: black !important ;
     display: inline-block;
+
     /*width: 54px;*/
     /*font-size: 2.5em;*/
     text-decoration: none;
@@ -237,9 +239,14 @@ height:100%;
 }
 .tabbed-slidebox .tsb-icons a.active {
     /*color: rgb(39, 132, 85);*/
-   color: #ce1841 !important;   
+   color: #ce1841 !important;  
+
+   /* Added for Update */
+   border: 1px solid white;
+   background-color: #1b1b40 !important; 
     /*font-size: 3.5em;*/
     /*-webkit-transform: translate3d(0,0,0);*/
+    /*border-radius: 3px;  */
 
     margin-top: 2px;
     padding: 15px;
@@ -472,7 +479,7 @@ p img
 }
 .load-more {
           padding: 10px;
-        margin-bottom: 80px;
+        margin-bottom: 100px;
         border: none;
 }
 .top-space {
@@ -746,6 +753,27 @@ height: 100%;
         animation: blink 1s infinite
   }
 
+.header-text {
+      font-size: 19px;
+        margin-top: 10px;
+        position: absolute;
+        /* right: 11px; */
+        font-weight: bold;
+        text-align: left;
+        left: 13px;
+        letter-spacing: 9px;
+        top: 10px;
+        color: #fff;
+        /* border: 1px solid #fff; */
+        padding: 11px;
+      
+}
+
+.scroll-content {
+  margin-left: -3px !important;
+  margin-right: -3px !important;
+  margin-bottom: 30px;
+}
 /*.new-scrool .scroll-view {
         position: relative;
         display: inline-block !important;

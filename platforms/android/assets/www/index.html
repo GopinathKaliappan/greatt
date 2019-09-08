@@ -69,8 +69,9 @@
 	<script id="index.html" type="text/ng-template">
       <ion-view title="Tabbed Slide box" hide-nav-bar="true">
         <ion-content  ng-controller="FeedController" scroll="false" overflow-scroll="true" has-bouncing="true">
+        <div style="width: 100%;margin: 0px auto;  background-color: {{currentColor}};height: 75px;"  ><div class="header-text"> {{currentTitle.split(' ')[0]}} <span style="color: yellow; !important">{{currentTitle.split(' ')[1]}}</span> {{currentTitle.split(' ')[2]}}</div></div>
           	<tab-slide-box tab="{{currentTab}}" >
-			    	<div class="tsb-icons " >
+			    	<div class="tsb-icons " style="background: {{currentColor}}">
 			    		<div class="tsb-ic-wrp mt_10 mb_5">
 
                  <!--  <div  ng-click="showPopup()" class="add-new">Add New Channel&nbsp;
@@ -83,16 +84,11 @@
  >
 <!--                 <a href="javascript:;" class="{{tab.icon}}" ng-repeat="tab in tabs" on-finish-render="test()">{{tab.name}}</a> -->
                                 
-                                <a href="javascript:;" style="background-color: {{colors[$index]}};border-bottom: 10px solid {{currentColor}};color: {{tab.text}} !important; " ng-repeat="tab in tabs track by $index"  on-finish-render="test()" >{{tab.name}}&nbsp;
+                                <a href="javascript:;" style="background-color: {{currentColor}};border-bottom: 10px solid {{currentColor}};color: {{tab.text}} !important; " ng-repeat="tab in tabs track by $index"  on-finish-render="test()" >{{tab.name}}&nbsp;
                                 
                                 </a>
                               
               </ion-scroll>	    		
-<!-- 
-  							<a href="javascript:;" class="ion-planet"></a>
-  							<a href="javascript:;" class="ion-leaf"></a>
-  							<a href="javascript:;" class="ion-ios-body"></a>
- -->
 					</div>
 			    	</div>
 			        <ion-slide-box  show-pager="false" on-slide-changed="slideHasChanged($index)">
@@ -102,7 +98,6 @@
                   <ion-view>                   
                     <ion-content  style="background-color: white;"  overflow-scroll="true" has-bouncing="true" class="animated bounce delay-2s">
 
-                            <!-- <h5>{{tab.name}}</h5> -->
       
   <div class="custom-column" >  
         <div ng-if="!data[tab.id] && tab.type !== 'menu'">  
@@ -136,16 +131,15 @@
             <div class="">
                         <div  class="text-left date-text" >
                {{ entry.pubDate._text  }}</div> 
-               <!-- <div  class="copyright">{{entry.copyright._text}}</div> -->
                               <i ng-click="sharenews(entry)" class="icon ion-share icon-common red" ></i>
-                              <!-- <i style="color:#4ebb57" ng-click="download(entry.img)" class="icon ion-android-download icon-common red" ></i> -->
+
             </div>
               
             </div> 
             <div ng-if="tab.type === 'menu' && tab.id=== 1000 " ng-controller="Livetabs">
   <ion-tabs class="tabs-assertive tabs-icon-top">
 
-  <ion-tab title="Live" icon-on="ion-ios-filing ion-social-youtube" icon-off="ion-ios-filing-outline ion-social-youtube">
+<!--   <ion-tab title="Live" icon-on="ion-ios-filing ion-social-youtube" icon-off="ion-ios-filing-outline ion-social-youtube">
 <ion-content class="new-scrool">
 
 <div>
@@ -164,8 +158,7 @@
 
 </div>
 <div style="margin-bottom: 30px;">
- <!-- <ion-scroll id="ionScrollRegion" direction="x" class="new-scrool"> -->
-      <!-- <div id="content" > -->
+
         <div ng-click="loadStream(item.url)"  ng-repeat="item in liveStreams" class="col-md-5  pad-5 half-width-2 relative-e" >
             <div class="live"> </div>
                   <div class="item-text-wrap news-card">
@@ -176,12 +169,11 @@
 
                
               </div>
-      <!-- </div> -->
-    <!-- </ion-scroll> -->
+      
     </div>
  </ion-content>
   </ion-tab>
-
+ -->
   
 
   <ion-tab title="News Paper" icon-on="ion-ios-filing ion-paper" icon-off="ion-ios-filing ion-paper">

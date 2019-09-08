@@ -464,6 +464,8 @@ $ionicPlatform.ready(function() {
   ] 
   // let parser = new RSSParser();
   $scope.entries = [];
+
+  $scope.currentTitle = '';
   $scope.api = 'https://agaramnews.herokuapp.com?url=';
   $scope.imageApi = 'https://agaramnews.herokuapp.com/static/categoryimages';
   // $scope.api = 'http://localhost:3000?url=';
@@ -562,14 +564,21 @@ $ionicPlatform.ready(function() {
           window.localStorage.setItem('tabs', JSON.stringify($scope.tabs));
           $scope.currentTab = 2;
             
-          
-        if(!window.localStorage.getItem('appRated') && $scope.tabs.length > 4)  {
-        
+        let count = Number(window.localStorage.getItem('totoalAdded'));  
+        if(!window.localStorage.getItem('appRated') && count > 3)  {
+            window.localStorage.setItem('totoalAdded', 0);
             $scope.appRate();  
                  
         } else {
-            $scope.showToast('Channel ' + item.name + ' Loading...');
+            window.localStorage.setItem('totoalAdded', count + 1);
+            $scope.showToast('Channel ' + item.name + ' Loading...');                        
+            // alert(count)
         }
+
+                    // $scope.showToast('Channel ' + item.name + ' Loading...');
+            // let count = Number(window.localStorage.getItem('totoalAdded'));
+            // window.localStorage.setItem('totoalAdded', count + 1);
+            // alert(count)
 
           
 
@@ -618,6 +627,7 @@ $ionicPlatform.ready(function() {
              // $scope.loadData({ index: $scope.tabs[0].id });
       }  
             $scope.currentColor = $scope.colors[0];
+            
     }  
     
     $scope.loadTabs();
@@ -644,6 +654,8 @@ $ionicPlatform.ready(function() {
                         $scope.loadData(dataId);  
 
                     }) 
+                        
+                    $scope.currentTitle = $scope.tabs[dataNew.index].name;          
 
                 } catch(e) {
                   // alert()
