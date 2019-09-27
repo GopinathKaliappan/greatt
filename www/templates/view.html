@@ -1,12 +1,16 @@
-<ion-view hide-nav-bar="true" ng-controller="fullnewsCtrl">
-
+<ion-view cache-view="false" hide-nav-bar="true" ng-controller="fullnewsCtrl">
+            
 	<ion-content  class="glance-area black-bg" style="height: 100%">
-
 	 	   <ion-slide-box show-pager="false" on-slide-changed="slideChanged(index)" does-continue="true" active-slide="clickedIndex">
 	 	   
           <ion-slide show-pager="false" ng-repeat="glance in currentGlance track by $index;"  >
 
                     <ion-content overflow-scroll="true" has-bouncing="true" class="animated slideInRight delay-2s">
+                      <div ng-if="!isSwifeSeen" style="margin:20px"> 
+                  <span style="padding-left: 25px; font-size: 10px"> Swipe To Read Next </span>
+                  <img src="img/swipe.gif" alt="swipe" style="width:100px"/>
+                  <span ng-click="seen()" style="font-weight:500; color:green">OK </span>
+  </div>  
                     <!-- <div class="opa_circle_1"><span class="hidden">a</span></div>
                     <div class="opa_circle_2"><span class="hidden">a</span></div>
                     <div class="opa_circle_3"><span class="hidden">a</span></div>
@@ -27,10 +31,7 @@
 						 	glance.description._cdata
 						 ">						  	
 						</div>		            
-            <div ng-if="!isSwifeSeen"> 
-                  <span style="padding-left: 25px; font-size: 14px"> Swipe Left/Right </span>
-                  <span ng-click="seen()" style="font-weight:500; color:green">OK </span>
-            </div>            
+            
           	</ion-content>
     
           </ion-slide>      
@@ -38,12 +39,12 @@
 
 <div class="bar bar-footer bar-assertive transparent_bg" style="height:50px;border:none;background: transparent; color:green; !important">
 
-  <div class="tab-item" ng-click="sharenews(currentNews.news)">
+  <div class="tab-item" ng-click="sharenews(currentGlance[clickedIndex])">
     	<!-- <i  class="icon ion-share icon-common green font-25" ></i> -->	
     	<div style="font-weight:500">SHARE
     	</div>
   </div>
-  <div class="tab-item" ng-click="viewfullnews(currentNews.news.link)">
+  <div class="tab-item" ng-click="viewfullnews(currentGlance[clickedIndex].link)">
 <!-- 
     <i  class="icon ion-arrow-expand icon-common green font-25"  style="color:orange"></i> -->
 <div style="font-weight:500">READ STORY
