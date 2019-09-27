@@ -57,7 +57,7 @@
   <body ng-app="slidebox" animation="slide-left-right-ios7">
 
 
-   <ion-nav-bar class="nav-title-slide-ios7 bar-positive">
+   <ion-nav-bar class="nav-title-slide-ios7 bar-positive hidden">
         <ion-nav-back-button class="button-icon ion-arrow-left-c">
         </ion-nav-back-button>
     </ion-nav-bar>
@@ -67,9 +67,9 @@
 
 	
 	<script id="index.html" type="text/ng-template">
-      <ion-view title="Tabbed Slide box" hide-nav-bar="true">
+      <ion-view title="News Street" hide-nav-bar="true">
         <ion-content  ng-controller="FeedController" scroll="false" overflow-scroll="true" has-bouncing="true">
-        <div style="width: 100%;margin: 0px auto;  background-color: {{currentColor}};height: 75px;"  ><div class="header-text"> {{currentTitle.split(' ')[0]}} <span style="color: yellow; !important">{{currentTitle.split(' ')[1]}}</span> {{currentTitle.split(' ')[2]}}</div></div>
+        <div style="width: 100%;margin: 0px auto;  background-color: {{currentColor}};height: 70px;"  ><div class="header-text"> {{currentTitle.split(' ')[0]}} <span style="color: yellow; !important">{{currentTitle.split(' ')[1]}}</span> {{currentTitle.split(' ')[2]}}</div></div>
           	<tab-slide-box tab="{{currentTab}}" >
 			    	<div class="tsb-icons " style="background: {{currentColor}}">
 			    		<div class="tsb-ic-wrp mt_10 mb_5">
@@ -96,7 +96,7 @@
                   <ion-slide ng-repeat="tab in tabs track by $index" ng-init="parentIndex=$index" >   
 
                   <ion-view>                   
-                    <ion-content  style="background-color: white;"  overflow-scroll="true" has-bouncing="true" class="animated bounce delay-2s">
+                    <ion-content  style="background-color: white;"  overflow-scroll="true" has-bouncing="true" class="animated slideInRight delay-2s">
 
       
   <div class="custom-column" >  
@@ -109,29 +109,35 @@
             ng-repeat="entry in data[tab.id] track by $index;" 
             ng-init="childIndex=$index" 
             ng-if="$index <= (pageCount * 15) && tab.type !== 'menu'"      
-            class="col col-xs-3 col-sm-3 col-md-3 col-lg-3 common-border custom-column"
+            class="news-container col col-xs-3 col-sm-3 col-md-3 col-lg-3 custom-column container"
             
            
         >
 
               
-            <div class="image-divider" ng-click="viewnews(entry.link, entry)">
-                <img ng-src="{{entry.img || entry.enclosure._attributes.url  || entry.image._text }}" on-error-src="img/loading.gif" style="width: 100%; min-height: 150px"/>
+            <div class="image-divider" ng-click="viewnews(entry.link, entry, $index)">
+           
+                <!-- <a href="/#/news"> -->
+                <img ng-src="{{entry.img || entry.enclosure._attributes.url  || entry.image._text }}" on-error-src="img/loading.gif" style="width: 100%; min-height: 150px; border-radius: 3px !important;"/>
+                <!-- </a> -->
             </div>
-            <div class="font-medium text-align-left  text-limit-4" ng-click="viewnews(entry.link)">
+            <div class="font-medium text-align-left  text-limit-4" ng-click="viewnews(entry.link, entry)">
 
                  {{entry.title._cdata || entry.title._text}}
                            
                        
             </div>
-            <div class="text-left" style="padding:5px">
+            <!-- <div class="text-left" style="padding:5px">
                              {{ entry.description._text}}
-            </div>
+            </div> -->
 
             <div class="">
-                        <div  class="text-left date-text" >
-               {{ entry.pubDate._text  }}</div> 
-                              <i ng-click="sharenews(entry)" class="icon ion-share icon-common red" ></i>
+                        
+<!--                <div>
+                              <i ng-click="sharenews(entry)" class="icon ion-share icon-common red font-25" ></i>
+                              <i ng-click="sharenews(entry)" class="icon ion-social-facebook  icon-common blue font-25" ></i>
+                              <i ng-click="sharenews(entry)" class="icon ion-social-whatsapp icon-common green font-25" ></i>
+                              </div> -->
 
             </div>
               
@@ -194,7 +200,7 @@
 
                   <div ng-repeat="tt in liveTabs track by $index" class="col-md-6  pad-5 half-width-2 " ng-click="viewlistnews(tt.url)">
                   <div class="item item-text-wrap news-card">
-                  <img ng-src="{{tt.channelImage}}" class="full-width image-height" />
+                  <img ng-src="{{tt.channelImage}}" class="full-width image-height" style="border-radius: 3px !important;" />
                                       <div class="text-center">{{tt.name}}</div>
 <!--                                       <div class="text-left" style="font-size: 13px">{{tt.language}}</div> -->
 
@@ -230,13 +236,13 @@
   </label>
 
 </div>
-<div class="container" ng-repeat="t in tabListing track by $index" class="item text-left channel-card">
+<div class="container" ng-repeat="t in tabListing track by $index" class="item text-left channel-card" style="padding: 0px 4px !important;">
 
-  <div class="content" ng-click="toggleItems(t.id, isPresent(t.id), t)">
+  <div class="content" ng-click="toggleItems(t.id, isPresent(t.id), t)" style="border-radius: 5px;">
     <i ng-if="isPresent(t.id)" class ="icon ion-checkmark-circled green tick-icon"></i><i ng-if="!isPresent(t.id)" class ="icon ion-checkmark-circled tick-icon"></i>
     <a>
       <div class="content-overlay"></div>
-      <img class="content-image" src="{{imageApi + '/' + t.channelImage + '.jpg'}}">
+      <img class="content-image" src="{{imageApi + '/' + t.channelImage + '.jpg'}}" style="border-radius: 3px !important;">
       <div class="content-details fadeIn-bottom">
         <h4 class="content-title" style="color: white">{{t.name}}</h4>
         <h5 class="content-title" style="color: white">{{t.channel}}</h5>
@@ -270,7 +276,7 @@
                   
 
       </ion-view>
-    
+  
     </script>
   </body>
 </html>

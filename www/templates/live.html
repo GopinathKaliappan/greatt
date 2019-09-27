@@ -1,3 +1,46 @@
-<ion-content ng-controller="Live"> 
-	Live
-</ion-content>
+<div class="bar bar-header bar-light">
+  <h3 class="title">News Street</h3>
+
+</div>
+<ion-view  cache-view="true" title="News Street">
+	<ion-content class="white-bg" ng-controller="fullnewsCtrl">
+		<h3 style="padding: 10px;"> {{currentNews.news.title._cdata || currentNews.news.title._text}} </h3>
+		<h6><i>{{currentNews.news.pubDate._text}}</i></h6>
+    <div style="padding:5px">
+		<img ng-src="{{currentNews.news.img || currentNews.news.enclosure._attributes.url  || currentNews.news.image._text }}" on-error-src="img/loading.gif" style="width: 100%; min-height: 150px; border-radius: 3px !important;"/>	
+    </div>
+		<div class="news-description des_new" ng-bind-html="
+		 	currentNews.news.description._text 
+		 	|| 
+		 	currentNews.news.description._cdata
+		 ">
+		  	
+		</div>
+	</ion-content>
+</ion-view>
+
+
+
+
+<div class="bar bar-footer bar-primary" style="height:65px;">
+
+  <div class="tab-item" ng-click="sharenews(currentNews.news)">
+    	<i  class="icon ion-share icon-common green font-25" ></i>	
+    	<div>Share
+    	</div>
+  </div>
+  <div class="tab-item" ng-click="viewfullnews(currentNews.news.link)">
+
+    <i  class="icon ion-arrow-expand icon-common green font-25"  style="color:orange"></i>
+<div>Read Full Story
+    	</div>
+  </div>
+  <div class="tab-item" ng-click="back()">
+    <i class="icon ion-arrow-return-left "> </i>
+    <div>Back
+    	</div>
+  </div>
+</div>
+</div>
+  
+</div>

@@ -1,5 +1,59 @@
-<ion-content>
+<ion-view hide-nav-bar="true" ng-controller="fullnewsCtrl">
 
-<br><br><br><br>
-Hello This
+	<ion-content  class="glance-area black-bg" style="height: 100%">
+
+	 	   <ion-slide-box show-pager="false" on-slide-changed="slideChanged(index)" does-continue="true" active-slide="clickedIndex">
+	 	   
+          <ion-slide show-pager="false" ng-repeat="glance in currentGlance track by $index;"  >
+
+                    <ion-content overflow-scroll="true" has-bouncing="true" class="animated slideInRight delay-2s">
+                    <!-- <div class="opa_circle_1"><span class="hidden">a</span></div>
+                    <div class="opa_circle_2"><span class="hidden">a</span></div>
+                    <div class="opa_circle_3"><span class="hidden">a</span></div>
+                    <div class="opa_circle_4"><span class="hidden">a</span></div>
+                    <div class="opa_circle_5"><span class="hidden">a</span></div> -->
+                    <div style="position:relative;padding:5px 10px;margin: 20px 22px 0px 22px;">
+                    <div class="topper-galnce"> </div>
+                        <div class="bottom-galnce"> </div>
+                    		<div style="margin: 10px 20px;text-align:left;color: brown; "> {{glance.title._cdata || glance.title._text}} </div>
+                    </div>
+					<h6><i style="color: black">   {{glance.pubDate._text}}</i></h6>
+				    <div style="padding:5px">
+						<img ng-src="{{glance.img || glance.enclosure._attributes.url  || glance.image._text }}" on-error-src="img/loading.gif" style="width: 100%; min-height: 150px; border-radius: 3px !important;padding:10px"/>	
+				    </div>
+						<div class="news-description des_new" ng-bind-html="
+						 	glance.description._text 
+						 	|| 
+						 	glance.description._cdata
+						 ">						  	
+						</div>		            
+            <div ng-if="!isSwifeSeen"> 
+                  <span style="padding-left: 25px; font-size: 14px"> Swipe Left/Right </span>
+                  <span ng-click="seen()" style="font-weight:500; color:green">OK </span>
+            </div>            
+          	</ion-content>
+    
+          </ion-slide>      
+        </ion-slide-box>
+
+<div class="bar bar-footer bar-assertive transparent_bg" style="height:50px;border:none;background: transparent; color:green; !important">
+
+  <div class="tab-item" ng-click="sharenews(currentNews.news)">
+    	<!-- <i  class="icon ion-share icon-common green font-25" ></i> -->	
+    	<div style="font-weight:500">SHARE
+    	</div>
+  </div>
+  <div class="tab-item" ng-click="viewfullnews(currentNews.news.link)">
+<!-- 
+    <i  class="icon ion-arrow-expand icon-common green font-25"  style="color:orange"></i> -->
+<div style="font-weight:500">READ STORY
+    	</div>
+  </div>
+  <div class="tab-item" ng-click="back()">
+    <!-- <i class="icon ion-arrow-return-left "> </i> -->
+    <div style="font-weight:500">BACK
+    	</div>
+  </div>
+</div>
 </ion-content>
+</ion-view>

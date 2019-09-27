@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <title>Daily News Updates</title>
+
+    <!-- ionic css -->
+    <link href="lib/ionic/css/ionic.css" rel="stylesheet">
+<!-- <link href="https://unpkg.com/ionicons@4.5.5/dist/css/ionicons.min.css" rel="stylesheet"> -->
+    <!-- your app's css -->
+    <link href="tabSlideBox.css" rel="stylesheet">
+    <link href="animate.css" rel="stylesheet">
+<!--     <link href="js/bootstrap.css" rel="stylesheet">
+ -->
+
+
+	    <!-- ionic/angularjs scripts -->
+    <script src="lib/ionic/js/ionic.bundle.min.js"></script>
+
+
+	<script src="cordova.js"></script>
+
+	<script src="ng-cordova.min.js"></script>
+	
+
+	<script src="js/app.js"></script>
+
+	
+	<script src="tabSlideBox.js"></script>
+
+	<!-- <script src="js/JQUERY.js"></script>	 -->
+
+<!--   <script src="js/rss-parser.min.js"></script> -->
+	
+  <!-- your app's script -->
+    <script>
+	    
+    </script>
+    
+	<style>
+		.slider-slide h3{
+			color:#fff;
+			margin-top:10px;
+		};
+		
+		.scroll{
+			height:100%;
+		};
+		
+		
+	</style>
+	
+  </head>
+
+  <body ng-app="slidebox" animation="slide-left-right-ios7">
+
+
+   <ion-nav-bar class="nav-title-slide-ios7 bar-positive">
+        <ion-nav-back-button class="button-icon ion-arrow-left-c">
+        </ion-nav-back-button>
+    </ion-nav-bar>
+
+    <ion-nav-view ng-controller="IndexCtrl"></ion-nav-view>
+
+
+	
+	<script id="index.html" type="text/ng-template">
+      <ion-view title="News Street" hide-nav-bar="true">
+        <ion-content  ng-controller="FeedController" scroll="false" overflow-scroll="true" has-bouncing="true">
+        <div style="width: 100%;margin: 0px auto;  background-color: {{currentColor}};height: 75px;"  ><div class="header-text"> {{currentTitle.split(' ')[0]}} <span style="color: yellow; !important">{{currentTitle.split(' ')[1]}}</span> {{currentTitle.split(' ')[2]}}</div></div>
+          	<tab-slide-box tab="{{currentTab}}" >
+			    	<div class="tsb-icons " style="background: {{currentColor}}">
+			    		<div class="tsb-ic-wrp mt_10 mb_5">
+
+                 <!--  <div  ng-click="showPopup()" class="add-new">Add New Channel&nbsp;
+                                
+                                </div>
+		 -->
+    <ion-scroll 
+        direction="x" 
+        class="tsb-hscroll" 
+ >
+<!--                 <a href="javascript:;" class="{{tab.icon}}" ng-repeat="tab in tabs" on-finish-render="test()">{{tab.name}}</a> -->
+                                
+                                <a href="javascript:;" style="background-color: {{currentColor}};border-bottom: 10px solid {{currentColor}};color: {{tab.text}} !important; " ng-repeat="tab in tabs track by $index"  on-finish-render="test()" >{{tab.name}}&nbsp;
+                                
+                                </a>
+                              
+              </ion-scroll>	    		
+					</div>
+			    	</div>
+			        <ion-slide-box  show-pager="false" on-slide-changed="slideHasChanged($index)">
+                  
+                  <ion-slide ng-repeat="tab in tabs track by $index" ng-init="parentIndex=$index" >   
+
+                  <ion-view>                   
+                    <ion-content  style="background-color: white;"  overflow-scroll="true" has-bouncing="true" class="animated slideInRight delay-2s">
+
+      
+  <div class="custom-column" >  
+        <div ng-if="!data[tab.id] && tab.type !== 'menu'">  
+                    <img src="img/preload.gif" style="width: 20%">
+                    <div><span> Loading ...</span></div>  
+        </div>  
+        
+        <div  
+            ng-repeat="entry in data[tab.id] track by $index;" 
+            ng-init="childIndex=$index" 
+            ng-if="$index <= (pageCount * 15) && tab.type !== 'menu'"      
+            class="col col-xs-3 col-sm-3 col-md-3 col-lg-3 common-border custom-column container"
+            
+           
+        >
+
+              
+            <div class="image-divider" ng-click="viewnews(entry.link, entry)">
+           
+                <!-- <a href="/#/news"> -->
+                <img ng-src="{{entry.img || entry.enclosure._attributes.url  || entry.image._text }}" on-error-src="img/loading.gif" style="width: 100%; min-height: 150px"/>
+                <!-- </a> -->
+            </div>
+            <div class="font-medium text-align-left  text-limit-4" ng-click="viewnews(entry.link)">
+
+                 {{entry.title._cdata || entry.title._text}}
+                           
+                       
+            </div>
+            <!-- <div class="text-left" style="padding:5px">
+                             {{ entry.description._text}}
+            </div> -->
+
+            <div class="">
+                        <div  class="text-left date-text" >
+               {{ entry.pubDate._text  }}</div> 
+               <div>
+                              <i ng-click="sharenews(entry)" class="icon ion-share icon-common red font-25" ></i>
+                              <i ng-click="sharenews(entry)" class="icon ion-social-facebook  icon-common blue font-25" ></i>
+                              <i ng-click="sharenews(entry)" class="icon ion-social-whatsapp icon-common green font-25" ></i>
+                              </div>
+
+            </div>
+              
+            </div> 
+            <div ng-if="tab.type === 'menu' && tab.id=== 1000 " ng-controller="Livetabs">
+  <ion-tabs class="tabs-assertive tabs-icon-top" ng-controller="fullnewsCtrl">
+
+<!--   <ion-tab title="Live" icon-on="ion-ios-filing ion-social-youtube" icon-off="ion-ios-filing-outline ion-social-youtube">
+<ion-content class="new-scrool">
+
+<div>
+      <div class="video-container">
+                <iframe ng-if="currentIndex === 1000" id="video" ng-src="{{videoSource}}" frameborder="0" allowfullscreen autoplay></iframe>
+              </div>
+ </div>
+ <div class="list language-container" ng-if="languages" > 
+
+  <label class="item item-input item-select full_width_force">
+    <div class="input-label">
+      Choose Language
+    </div>
+<select ng-options="item as item.label for item in languages track by item.id" ng-model="selectedLanguage" ng-change="selectLiveStream(selectedLanguage)"></select>
+  </label>
+
+</div>
+<div style="margin-bottom: 30px;">
+
+        <div ng-click="loadStream(item.url)"  ng-repeat="item in liveStreams" class="col-md-5  pad-5 half-width-2 relative-e" >
+            <div class="live"> </div>
+                  <div class="item-text-wrap news-card">
+                  <img ng-src="{{item.channelImage}}" class="img-video" />
+                                      <div style="padding: 8px 0px;" class="text-center">{{item.name}}</div>
+
+                  </div>
+
+               
+              </div>
+      
+    </div>
+ </ion-content>
+  </ion-tab>
+ -->
+  
+
+  <ion-tab title="News Paper" icon-on="ion-ios-filing ion-paper" icon-off="ion-ios-filing ion-paper">
+    <ion-content>
+              <div class="" style="margin-top: 50px;margin-bottom: 50px;">
+              <div class="list language-container" ng-if="languages" > 
+
+  <label class="item item-input item-select full_width_force">
+    <div class="input-label">
+      Choose Language
+    </div>
+<select ng-options="item as item.label for item in languages track by item.id" ng-model="selectedLanguage" ng-change="selectLanguage(selectedLanguage)"></select>
+  </label>
+
+</div>
+                <!-- 
+            <div ng-if="liveTabs.length > 0" class="video-container"><iframe width="853" height="480" src="https://www.youtube.com/embed/z9Ul9ccDOqE" frameborder="0" allowfullscreen></div> -->
+
+                  <div ng-repeat="tt in liveTabs track by $index" class="col-md-6  pad-5 half-width-2 " ng-click="viewlistnews(tt.url)">
+                  <div class="item item-text-wrap news-card">
+                  <img ng-src="{{tt.channelImage}}" class="full-width image-height" />
+                                      <div class="text-center">{{tt.name}}</div>
+<!--                                       <div class="text-left" style="font-size: 13px">{{tt.language}}</div> -->
+
+                  </div>
+
+               
+              </div>
+            </div>
+            </ion-content>
+  </ion-tab>
+
+</ion-tabs>        
+              <div ng-if="!tabListing" >  
+      <img src="img/preload.gif" style="width: 20%">
+      <div><span> Loading ...</span></div>  
+  </div>
+     
+
+        </div>
+
+        <div ng-if="tab.type === 'menu' && tab.id=== 1001 " >
+  <div ng-if="!tabListing" >  
+      <img src="img/preload.gif" style="width: 20%">
+      <div><span> Loading ...</span></div>  
+  </div>
+<div class="list language-container" ng-if="languages" > 
+
+  <label class="item item-input item-select full_width_force">
+    <div class="input-label">
+      Choose Language
+    </div>
+<select ng-options="item as item.label for item in languages track by item.id" ng-model="selectedLanguage" ng-change="selectLanguage(selectedLanguage)"></select>
+  </label>
+
+</div>
+<div class="container" ng-repeat="t in tabListing track by $index" class="item text-left channel-card">
+
+  <div class="content" ng-click="toggleItems(t.id, isPresent(t.id), t)">
+    <i ng-if="isPresent(t.id)" class ="icon ion-checkmark-circled green tick-icon"></i><i ng-if="!isPresent(t.id)" class ="icon ion-checkmark-circled tick-icon"></i>
+    <a>
+      <div class="content-overlay"></div>
+      <img class="content-image" src="{{imageApi + '/' + t.channelImage + '.jpg'}}">
+      <div class="content-details fadeIn-bottom">
+        <h4 class="content-title" style="color: white">{{t.name}}</h4>
+        <h5 class="content-title" style="color: white">{{t.channel}}</h5>
+      </div>
+    </a>
+  </div>
+</div>
+
+        </div>
+
+   <ion-item   class="load-more">
+   
+    <span ng-click="loadMore()" ng-if="pageCount * 15 <= data[currentIndex].length"> Load More Updates</span>
+    <span ng-if="pageCount*15 >= data[currentIndex].length"> No more data stay tunned
+        <div style="margin-top: 50px">
+            <img src="https://qrs.in/frontent/images/noresult.png" style="width: 70%" />
+        </div>
+    </span>
+<!--  {{ pageCount*20 <= data[currentIndex].length ? 'Load More Updates' : 'No more data stay tunned'}}   -->
+            </ion-item> 
+</ion-content>
+
+    </ion-view>
+
+</ion-slide>
+
+            </tab-slide-box>
+
+</ion-content>  
+
+                  
+
+      </ion-view>
+  
+    </script>
+  </body>
+</html>

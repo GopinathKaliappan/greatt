@@ -3359,15 +3359,17 @@ body {
   -webkit-box-orient: vertical;
 }
 .text-limit-4 {
- /*max-height: 82px;*/
-        /*min-height: 79px;*/
-        margin-bottom: 6px;
-        padding: 2px 9px;
+        max-height: 82px;
+        margin-bottom: 6px;        
+        min-height: 58px;
+        padding: 2px 9px;        
         overflow: hidden;
         text-overflow: ellipsis;
+        line-height: 1.5;
         display: -webkit-box;
-        -webkit-line-clamp: 4;
+        -webkit-line-clamp: 3;
         -webkit-box-orient: vertical;
+        font-size: 12px !important;
 }
 .custom-column {
   padding: 1px !important;
@@ -3378,7 +3380,7 @@ body {
 }
 .font-medium {
   font-weight: 600;
-  font-size: 13px;
+  font-size: 11px;
 }
 .common-divider {
   width: 50% !important;
@@ -3408,6 +3410,10 @@ body {
     overflow: hidden;
     text-overflow: ellipsis;
     -webkit-line-clamp: 7;
+}
+
+.image-divider {
+  margin: 0px 7px !important;
 }
 /*.common-divider:last-child {
 
