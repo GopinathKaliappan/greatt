@@ -35,36 +35,13 @@ var app = angular.module('slidebox', ['ionic', 'tabSlideBox','ngCordova', 'xml',
       
           $rootScope.$on("$locationChangeStart", function(event, next, current){
               $rootScope.error = null;
-              console.log("Route change!!!", $location.path());
+              
               var path = $location.path();
               
               
           });
           
-// $ionicPlatform.ready(function() {
 
-//     if( ionic.Platform.isAndroid() )  { 
-
-//    admobid = { // for Android
-//       banner: 'ca-app-pub-5179473842241588/7169440949' // Change this to your Ad Unit Id for banner...
-//    };
-
-
-
-//    if(AdMob) {
-    
-//    alert(1); 
-//          AdMob.createBanner( {
-//          adId:admobid.banner, 
-//          position:AdMob.AD_POSITION.BOTTOM_CENTER, 
-//          autoShow:true
-//       } );
-//     }
-
-
-// }
-
-// });
       }
       ]);
 
@@ -93,7 +70,7 @@ var app = angular.module('slidebox', ['ionic', 'tabSlideBox','ngCordova', 'xml',
         app.controller("IndexCtrl", ['$rootScope', "$scope", "$stateParams", "$q", "$location", "$window", '$timeout', 
       function($rootScope, $scope, $stateParams, $q, $location, $window, $timeout){
       $scope.onSlideMove = function(data){
-        //alert("You have selected " + data.index + " tab");
+      
       };  
         }
         ])
@@ -104,11 +81,11 @@ var app = angular.module('slidebox', ['ionic', 'tabSlideBox','ngCordova', 'xml',
       
           $rootScope.$on("$locationChangeStart", function(event, next, current){
               $rootScope.error = null;
-              console.log("Route change!!!", $location.path());
+              
               var path = $location.path();
               
               
-              console.log("App Loaded!!!");
+              
           });
       }
       ]);
@@ -123,13 +100,13 @@ var app = angular.module('slidebox', ['ionic', 'tabSlideBox','ngCordova', 'xml',
         url : '/news',
         templateUrl : 'templates/view.html',
         controller: 'fullnewsCtrl'
-        // template : '<h1>Hellow</h1>'
+        
       });
 
       $urlRouterProvider.otherwise("/");
     });
     
-        app.controller("IndexCtrl", ['$rootScope', "$scope", "$stateParams", "$q", "$location", "$window", '$timeout', 
+app.controller("IndexCtrl", ['$rootScope', "$scope", "$stateParams", "$q", "$location", "$window", '$timeout', 
       function($rootScope, $scope, $stateParams, $q, $location, $window, $timeout){
 
 
@@ -144,12 +121,186 @@ var app = angular.module('slidebox', ['ionic', 'tabSlideBox','ngCordova', 'xml',
         ])
 
 app.controller("fullnewsCtrl", function($http, $scope,$timeout,$ionicPlatform,$cordovaSocialSharing,$ionicSlideBoxDelegate, $ionicPopup, $cordovaInAppBrowser, $ionicLoading, $cordovaToast, $rootScope, $ionicHistory, $ionicSlideBoxDelegate) {
+
+
+  $scope.stars = [1,2,3,4,5];  
+  $scope.language = language;    
+  $rootScope.addCount = 0;     
+  $scope.appRated = false;  
+  if(!window.localStorage.getItem('appRated'))  {
+            $scope.appRated = false;
+                 
+        } else {
+           $scope.appRated = true;                         
+  }
+
+  $scope.rateApp = function (star) {
+    if(star > 3) {
+       window.localStorage.setItem('appRated', true);    
+       window.open(playStoreLink);          
+       $scope.appRated = true;  
+    } else {
+       $scope.appRated = true;  
+       window.localStorage.setItem('appRated', true);    
+    }   
+  }
+
   try {
     $rootScope.isSwifeSeen = JSON.parse(window.localStorage['seen']);   
+    
   }catch(e) {
 
   }
  
+ $scope.colors = [
+    '#1B2631',
+    '#512E5F',
+    '#500b0b',
+    '#145A32',
+    '#922B21',
+    '#6E2C00',
+    '#512E5F',
+    '#1B2631',
+    '#154360',
+    '#145A32',
+    '#7D6608',
+    '#1B2631',
+    '#FF5733',
+    '#145A32',
+    '#922B21',
+    '#6E2C00',
+    '#512E5F',
+    '#1B2631',
+    '#154360',
+    '#145A32',
+    '#7D6608',
+    '#1B2631',
+    '#154360',
+    '#145A32',
+    '#7D6608',
+    '#1B2631',
+    '#FF5733',
+    '#145A32',
+    '#922B21',
+    '#6E2C00',
+    '#512E5F',
+    '#1B2631',
+    '#154360',
+    '#145A32',
+    '#7D6608',
+    '#1B2631',    
+    '#145A32',
+    '#7D6608',
+    '#1B2631',
+    '#FF5733',
+    '#145A32',
+    '#922B21',
+    '#6E2C00',
+    '#512E5F',
+    '#1B2631',
+    '#154360',
+    '#145A32',
+    '#7D6608',
+    '#1B2631',    
+    '#1B2631',
+    '#512E5F',
+    '#500b0b',
+    '#145A32',
+    '#922B21',
+    '#6E2C00',
+    '#512E5F',
+    '#1B2631',
+    '#154360',
+    '#145A32',
+    '#7D6608',
+    '#1B2631',
+    '#FF5733',
+    '#145A32',
+    '#922B21',
+    '#6E2C00',
+    '#512E5F',
+    '#1B2631',
+    '#154360',
+    '#145A32',
+    '#7D6608',
+    '#1B2631',
+    '#154360',
+    '#145A32',
+    '#7D6608',
+    '#1B2631',
+    '#FF5733',
+    '#145A32',
+    '#922B21',
+    '#6E2C00',
+    '#512E5F',
+    '#1B2631',
+    '#154360',
+    '#145A32',
+    '#7D6608',
+    '#1B2631',    
+    '#145A32',
+    '#7D6608',
+    '#1B2631',
+    '#FF5733',
+    '#145A32',
+    '#922B21',
+    '#6E2C00',
+    '#512E5F',
+    '#1B2631',
+    '#154360',
+    '#145A32',
+    '#7D6608',
+    '#1B2631',    
+    '#1B2631',
+    '#512E5F',
+    '#500b0b',
+    '#145A32',
+    '#922B21',
+    '#6E2C00',
+    '#512E5F',
+    '#1B2631',
+    '#154360',
+    '#145A32',
+    '#7D6608',
+    '#1B2631',
+    '#FF5733',
+    '#145A32',
+    '#922B21',
+    '#6E2C00',
+    '#512E5F',
+    '#1B2631',
+    '#154360',
+    '#145A32',
+    '#7D6608',
+    '#1B2631',
+    '#154360',
+    '#145A32',
+    '#7D6608',
+    '#1B2631',
+    '#FF5733',
+    '#145A32',
+    '#922B21',
+    '#6E2C00',
+    '#512E5F',
+    '#1B2631',
+    '#154360',
+    '#145A32',
+    '#7D6608',
+    '#1B2631',    
+    '#145A32',
+    '#7D6608',
+    '#1B2631',
+    '#FF5733',
+    '#145A32',
+    '#922B21',
+    '#6E2C00',
+    '#512E5F',
+    '#1B2631',
+    '#154360',
+    '#145A32',
+    '#7D6608',
+    '#1B2631',    
+  ];
  $scope.seen = function() {
   window.localStorage['seen'] = true;
   $rootScope.isSwifeSeen = true;
@@ -157,26 +308,30 @@ app.controller("fullnewsCtrl", function($http, $scope,$timeout,$ionicPlatform,$c
  $ionicPlatform.registerBackButtonAction(function () {
     $ionicHistory.goBack();            
 }, 100);
-//  $scope.options = {
-//   loop: false,
-//   effect: 'fade',
-//   speed: 500,
-// }
 
 $scope.$on("$ionicSlides.sliderInitialized", function(event, data){
-  // data.slider is the instance of Swiper
+
   $scope.slider = data.slider;
 });
 
 $scope.$on("$ionicSlides.slideChangeStart", function(event, data){
-  console.log('Slide change is beginning');
+  
 });
 
 $scope.$on("$ionicSlides.slideChangeEnd", function(event, data){
-  // note: the indexes are 0-based
+  $scope.seen();
+
   $scope.activeIndex = data.slider.activeIndex;
   $scope.previousIndex = data.slider.previousIndex;
 });
+
+$scope.slideChanged = function (){
+    $scope.seen();
+    $rootScope.addCount += 1;
+    if($rootScope.addCount > 6) {
+      $scope.showAdd();
+    }
+}
 
  $scope.sharenews=function(entry){
  let description = entry.description[Object.keys(entry.description)[0]]; 
@@ -190,16 +345,16 @@ $scope.$on("$ionicSlides.slideChangeEnd", function(event, data){
  } else if(entry.image._text){
    image = entry.image._text; 
  }
- // image = entry.title[Object.keys(message.title)[0]]; 
+
  $ionicLoading.show({template: 'Loading ...'}); 
  $cordovaSocialSharing
     .share('News Street' , message, image, playStoreLink) // Share via native share sheet
     .then(function(result) {
       $ionicLoading.hide();
-      // Success!
+      
     }, function(err) {
       $ionicLoading.hide();
-      // An error occured. Show a message to the user
+      
     });
 
   setTimeout(()=> {
@@ -209,15 +364,7 @@ $scope.$on("$ionicSlides.slideChangeEnd", function(event, data){
  $scope.back = function() {
   $ionicHistory.goBack();
  }
-  // $scope.shareViaFacebook = function(news)   {
-  //    $cordovaSocialSharing
-  //   .shareViaFacebook(message, image, link)
-  //   .then(function(result) {
-  //     // Success!
-  //   }, function(err) {
-  //     // An error occurred. Show a message to the user
-  //   });
-  // }
+ 
   $scope.viewfullnews = function(link) {
     cordova.ThemeableBrowser.open(link[Object.keys(link)[0]], '_blank', {
     statusbar: {
@@ -251,36 +398,20 @@ $scope.$on("$ionicSlides.slideChangeEnd", function(event, data){
             event: 'sharePressed'
         }
     ],
-    // menu: {
-    //     wwwImage: 'img/menu.png',
-    //     imagePressed: 'menu_pressed',
-    //     title: 'Test',
-    //     cancel: 'Cancel',
-    //     align: 'right',
-    //     items: [
-    //         {
-    //             event: 'helloPressed',
-    //             label: 'Hello World!'
-    //         },
-    //         {
-    //             event: 'testPressed',
-    //             label: 'Test!'
-    //         }
-    //     ]
-    // },
+   
     backButtonCanClose: true,
 
 }).addEventListener('backPressed', function(e) {
-    // alert('back pressed');
+    
 }).addEventListener('helloPressed', function(e) {
-    // alert('hello pressed');
+    
 }).addEventListener('sharePressed', function(e) {
   $scope.sharenews($scope.currentNews);
-    // $scope.sharenews(e);
+    
 }).addEventListener(cordova.ThemeableBrowser.EVT_ERR, function(e) {
-    console.error(e.message);
+    
 }).addEventListener(cordova.ThemeableBrowser.EVT_WRN, function(e) {
-    console.log(e.message);
+    
 });
 
   }  
@@ -290,49 +421,48 @@ $scope.$on("$ionicSlides.slideChangeEnd", function(event, data){
   $rootScope.$on("$locationChangeSuccess", function (data,prev, next) {  
     
 
-      // if(prev !== next && prev.includes('news')) {        
-      //     $scope.prevUrl = window.location.href;    
-      //     $scope.newsData = $rootScope.currentNews;
-          
-      //     $scope.newsList = {};
-      //     // $http({
-      //     //   method: 'GET',
-      //     //   url: newsUrl+$rootScope.currentNews.link[Object.keys($rootScope.currentNews.link)]
-      //     // }).then(function successCallback(response) {
-      //     //   $scope.newsList = response.data.meta;
-      //     //   console.log($scope.newsList);
-      //     //   $scope.newsList.map((item,index)=>{
-      //     //     if(JSON.stringify(item).length < 99) {
-      //     //       $scope.newsList.splice(index, 1);
-      //     //     }
-      //     //   })
-      //     //   // this callback will be called asynchronously
-      //     //   // when the response is available
-      //     // }, function errorCallback(response) {
-      //     //   // called asynchronously if an error occurs
-      //     //   // or server returns response with an error status.
-      //     // });
-
-      //    $http.get(newsUrl+$rootScope.currentNews.link[Object.keys($rootScope.currentNews.link)], {
-      //     responseType: "arraybuffer"
-      //   })
-      //   .success(function(data) {
-      //     var anchor = angular.element('<a/>');
-      //     var blob = new Blob([data]);
-      //     anchor.attr({
-      //       href: window.URL.createObjectURL(blob),
-      //       target: '_blank',
-      //       download: 'fileName.png'
-      //     })[0].click();
-      //   })
-      // } else {
-      //   $scope.prevUrl = window.location.href;    
-      // }
+      
   });
-  // $scope.call = ()=> {
-    
-  // }
 
+  $scope.showAdd = function ()   {  
+    $rootScope.addCount = 0;
+     $ionicPlatform.ready(function() {
+
+    if( ionic.Platform.isAndroid() )  { 
+
+   admobid = { // for Android
+      banner: 'ca-app-pub-5179473842241588/5519262986' // Change this to your Ad Unit Id for banner...
+   };
+
+
+
+   if(AdMob) {
+
+    // var admob = window.plugins.AdMob;
+
+      //    AdMob.createBanner( {
+      //    adId:admobid.banner, 
+      //    // position:AdMob.AD_POSITION.BOTTOM_CENTER, 
+      //    autoShow:true, 
+      //    isTesting: true
+      // } );
+      AdMob.prepareInterstitial(
+        {
+          adId: admobid.banner, 
+          adSize: 'FULL_BANNER'
+          
+
+        })
+      .then(() => {         
+        AdMob.showInterstitial(); 
+      });
+    }
+
+    }
+
+});   
+  }
+    
 })        
 app.controller("Livetabs", function($http, $scope,$timeout,$ionicPlatform,$cordovaSocialSharing,$ionicSlideBoxDelegate, $ionicPopup, $cordovaInAppBrowser, $ionicLoading, $cordovaToast,$location) {
   $scope.imageApi = 'https://agaramnews.herokuapp.com/static/categoryimages';
@@ -382,19 +512,7 @@ cordova.ThemeableBrowser.open(link, '_blank', {
     title: {
         color: '#003264ff',
         showPageTitle: true
-    },
-    // backButton: {
-    //     wwwImage: 'img/back.png',
-    //     imagePressed: 'back_pressed',
-    //     align: 'left',
-    //     event: 'backPressed'
-    // },
-    // backButton: {
-    //     image: 'back',
-    //     imagePressed: 'back_pressed',
-    //     align: 'left',
-    //     event: 'backPressed'
-    // },
+    },    
     forwardButton: {
         wwwImage: 'img/forward',
         imagePressed: 'forward_pressed',
@@ -440,10 +558,10 @@ cordova.ThemeableBrowser.open(link, '_blank', {
 }).addEventListener('sharePressed', function(e) {
     // $scope.sharenews(e);
 }).addEventListener(cordova.ThemeableBrowser.EVT_ERR, function(e) {
-    console.error(e.message);
+    
     
 }).addEventListener(cordova.ThemeableBrowser.EVT_WRN, function(e) {
-    console.log(e.message);
+    
     
 });
 
@@ -505,6 +623,17 @@ $scope.liveStreamApi = 'https://agaramnews.herokuapp.com/live-stream?language='+
 })
 app.controller("FeedController", function($http, $scope,$timeout,$ionicPlatform,$cordovaSocialSharing,$ionicSlideBoxDelegate, $ionicPopup, $cordovaInAppBrowser, $ionicLoading, $cordovaAdMob, $cordovaToast, $timeout, $sce,$ionicScrollDelegate, $rootScope, $location, $filter,  $ionicSlideBoxDelegate) {
 
+try {
+    $rootScope.isSwifeSeenHome = JSON.parse(window.localStorage['seenHome']);   
+  }catch(e) {
+
+  }
+$scope.seenHome = function() {
+
+  window.localStorage['seenHome'] = true;
+  $rootScope.isSwifeSeenHome = true;
+ 
+}
 $scope.options = {
   loop: false,
   effect: 'fade',
@@ -512,16 +641,16 @@ $scope.options = {
 }
 
 $scope.$on("$ionicSlides.sliderInitialized", function(event, data){
-  // data.slider is the instance of Swiper
+ 
   $scope.slider = data.slider;
 });
 
 $scope.$on("$ionicSlides.slideChangeStart", function(event, data){
-  console.log('Slide change is beginning');
+  
 });
 
 $scope.$on("$ionicSlides.slideChangeEnd", function(event, data){
-  // note: the indexes are 0-based
+  
   $scope.activeIndex = data.slider.activeIndex;
   $scope.previousIndex = data.slider.previousIndex;
 });
@@ -559,10 +688,10 @@ $scope.languages = [{
     }];
 $scope.selectedLanguage = language;
 $scope.selectLanguage = (lan) => {
-  // $scope.selectedLanguage = lan;
+  
   $scope.selectedLanguage = lan.id;
   $scope.showPopup();
-  // $scope.loadLive();
+  
   $scope.showToast('Loading ... ' + lan.label);
   
   
@@ -591,9 +720,9 @@ $scope.showToast = function (message) {
     $cordovaToast
     .show(message, 'long', 'center')
     .then(function(success) {
-      // success
+      
     }, function (error) {
-      // error
+      
     });
 } catch(e) {
 
@@ -601,7 +730,7 @@ $scope.showToast = function (message) {
 }  
 var backbutton=0;
 $ionicPlatform.registerBackButtonAction(function () {
-        // $scope.showToast('Slide to Change the page');
+        
         if(backbutton == 0 ) {
             backbutton += 1;
             $scope.showToast('Slide to change the Page');
@@ -621,7 +750,7 @@ function onDeviceReady() {
   try {
     window.open = cordova.InAppBrowser.open;
   } catch(e) {
-    console.log("")
+    
   }
 }
 
@@ -642,7 +771,7 @@ $ionicPlatform.ready(function() {
     // var admob = window.plugins.AdMob;
 
          AdMob.createBanner( {
-         adId:admobid.banner, 
+         adId:admobid.banner,
          position:AdMob.AD_POSITION.BOTTOM_CENTER, 
          autoShow:true
       } );
@@ -710,9 +839,11 @@ $ionicPlatform.ready(function() {
   $rootScope.clickedIndex = 0;
   $scope.currentTitle = '';
   $scope.api = 'https://agaramnews.herokuapp.com?url=';
+  // $scope.api = 'http://localhost:3000?url=';
   $scope.imageApi = 'https://agaramnews.herokuapp.com/static/categoryimages';
   
   $scope.tabsApi = 'https://agaramnews.herokuapp.com/tabs?language=';
+  // $scope.tabsApi = 'http://localhost:3000/tabs?language=';
   
   $scope.pagination = '&page=0count=20';
   $scope.apiKey = '&api_key=hpi0ghvdfyy5xbbiwuruga2i6p49cnf0jilgt3dg';
@@ -758,7 +889,7 @@ $ionicPlatform.ready(function() {
                   $scope.data[$scope.tabs.filter(item => item.id === dataId.index)[0].id] = JSON.parse(window.localStorage.getItem($scope.tabs.filter(item => item.id === dataId.index)[0].id));                             
 
                   $rootScope.currentGlance = $scope.data[$scope.tabs.filter(item => item.id === dataId.index)[0].id] = JSON.parse(window.localStorage.getItem($scope.tabs.filter(item => item.id === dataId.index)[0].id));                             
-                  console.log($rootScope.currentGlance);
+                  
                   $ionicSlideBoxDelegate.update()
               }  
               fetch($scope.api + $scope.tabs.filter(item => item.id === dataId.index)[0].url).then((res)=> res.json()).then((result) =>{
@@ -766,7 +897,7 @@ $ionicPlatform.ready(function() {
                  let items  = result;
                  try {
                    items.forEach(function( entry, i) {
-                  // console.log(entry.title + ':' + entry.link);
+                  
                        entry.img = getImage(entry.description._cdata = entry.description._cdata);
                        data.push(entry);
                           
@@ -838,7 +969,7 @@ $ionicPlatform.ready(function() {
     $scope.showPopup = function() {
       
         fetch($scope.tabsApi  + $scope.selectedLanguage).then((res)=> res.json()).then((response)=> {
-          console.log(response)
+          
               $scope.$apply( () => {
                               imageLoader(response);
                               $scope.tabListing = response;
@@ -880,6 +1011,7 @@ $ionicPlatform.ready(function() {
 
             $scope.onSlideMove = (dataNew) => {
 
+                    $scope.seenHome();
                     try {
                           $scope.currentColor = $scope.colors[dataNew.index];
                         let dataId = {
@@ -984,6 +1116,26 @@ $scope.shareFacebook = (message, image, link) => {
 $scope.viewnews=function(link, news, index)
 {
 
+
+
+    $ionicPlatform.ready(function() {
+
+    if( ionic.Platform.isAndroid() )  { 
+
+   admobid = { // for Android
+      banner: 'ca-app-pub-5179473842241588/5519262986' // Change this to your Ad Unit Id for banner...
+   };
+
+
+
+   if(AdMob) {
+    AdMob.removeBanner();
+   
+    }
+
+    }
+
+});
 $rootScope.clickedIndex = index;
 $rootScope.currentNews = { link, news };
 
@@ -1025,7 +1177,7 @@ $location.path('/news');
   });
 
   myPopup.then(function(res) {
-    console.log('Tapped!', res);
+    
   });
 
   }
@@ -1048,7 +1200,7 @@ app.directive('onErrorSrc', function() {
 });
 app.directive('mySelect', function($window) {
     function main(scope, element, attrs) {
-        console.log('mySelect directive');
+        
 
         // Selecting model value
         for (var idx in scope.ops) {
@@ -1143,18 +1295,18 @@ app.directive('mySelect', function($window) {
         function updatePreSelection() {
             optionsDom.children().filter('.preselected').removeClass('preselected');
             optionsDom.find('div').eq(preSelected).addClass('preselected');
-            console.log(preSelected);
+            
         }
         updatePreSelection();
 
         function preSelectNext() {
-            console.log(scope.ops.length);
+            
             preSelected = (preSelected + 1) % scope.ops.length;
             updatePreSelection();
         }
 
         function preSelectPrev() {
-            console.log(scope.ops.length);
+            
             preSelected = (preSelected - 1) % scope.ops.length;
             updatePreSelection();
         }

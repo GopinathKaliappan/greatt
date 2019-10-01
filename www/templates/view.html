@@ -1,43 +1,68 @@
 <ion-view cache-view="false" hide-nav-bar="true" ng-controller="fullnewsCtrl">
-            
+
 	<ion-content  class="glance-area black-bg" style="height: 100%">
+
+
 	 	   <ion-slide-box show-pager="false" on-slide-changed="slideChanged(index)" does-continue="true" active-slide="clickedIndex">
 	 	   
           <ion-slide show-pager="false" ng-repeat="glance in currentGlance track by $index;"  >
-
-                    <ion-content overflow-scroll="true" has-bouncing="true" class="animated slideInRight delay-2s">
+                <ion-view cache-view="false">        
+                    <ion-content overflow-scroll="true" has-bouncing="true" class="animated slideInRight delay-2s" scroll="true">
+                    
                       <div ng-if="!isSwifeSeen" style="margin:20px"> 
                   <span style="padding-left: 25px; font-size: 10px"> Swipe To Read Next </span>
-                  <img src="img/swipe.gif" alt="swipe" style="width:100px"/>
+                  <img src="img/swipe.gif" alt="swipe" style="width:100px; margin-top: 20px"/>
                   <span ng-click="seen()" style="font-weight:500; color:green">OK </span>
   </div>  
-                    <!-- <div class="opa_circle_1"><span class="hidden">a</span></div>
-                    <div class="opa_circle_2"><span class="hidden">a</span></div>
-                    <div class="opa_circle_3"><span class="hidden">a</span></div>
-                    <div class="opa_circle_4"><span class="hidden">a</span></div>
-                    <div class="opa_circle_5"><span class="hidden">a</span></div> -->
-                    <div style="position:relative;padding:5px 10px;margin: 20px 22px 0px 22px;">
-                    <div class="topper-galnce"> </div>
-                        <div class="bottom-galnce"> </div>
-                    		<div style="margin: 10px 20px;text-align:left;color: brown; "> {{glance.title._cdata || glance.title._text}} </div>
+           
+                    <div style="position:relative;padding:5px 10px;margin: 35px 22px 0px 22px;">
+                    <div class="topper-galnce" style="border-top:2px solid {{colors[clickedIndex]}}; "> </div>
+                        <div class="bottom-galnce" style="border-right: 3px solid {{colors[clickedIndex]}};"> </div>
+                        <div ng-if="language=='tamil'" style="margin: 10px 20px;text-align:left;font-size: 11px;font-weight: bold; "> {{glance.title._cdata || glance.title._text}} </div>           
+                        <div ng-if="language!='tamil'" style="margin: 10px 20px;text-align:left;font-size: 12px;font-weight: bold; "> {{glance.title._cdata || glance.title._text}} </div>
                     </div>
 					<h6><i style="color: black">   {{glance.pubDate._text}}</i></h6>
 				    <div style="padding:5px">
-						<img ng-src="{{glance.img || glance.enclosure._attributes.url  || glance.image._text }}" on-error-src="img/loading.gif" style="width: 100%; min-height: 150px; border-radius: 3px !important;padding:10px"/>	
+						<img ng-src="{{glance.img || glance.enclosure._attributes.url  || glance.image._text || glance.image._cdata }}" on-error-src="img/loading.gif" style="width: 100%; min-height: 150px; border-radius: 3px !important;padding:10px"/>	
 				    </div>
-						<div class="news-description des_new" ng-bind-html="
+            <div style="text-align:left; padding:20px;margin-bottom: 30px;">
+            <span style="
+                  font-size: 35px;
+                  margin-top: 13px;
+                  color: "{{colors[clickedIndex]}}"
+                  
+          ">“</span>
+						<span
+             ng-if="language != 'tamil'" class="news-description des_new" ng-bind-html="
 						 	glance.description._text 
 						 	|| 
 						 	glance.description._cdata
 						 ">						  	
-						</div>		            
-            
+						</span>		       
+
+            <span style="font-size: 10px; font-weight: bold" ng-if="language == 'tamil'" class="news-description des_new" ng-bind-html="
+              glance.description._text 
+              || 
+              glance.description._cdata
+             ">               
+            </span>               
+            </div>
+            <div ng-if="!appRated">
+                <h6>Rate your reading experience </h6>
+
+                <span ng-repeat="star in stars" ng-click="rateApp(star)">
+                    <img src="img/star.png" style="width: 30px"/>
+                </span>                
+                <div>
+                  <h6>it will not take more than 30 seconds. <span style='font-size:25px;color:green'>&#128522;</span> </h6>
+                </div>
+            </div>    
           	</ion-content>
-    
+            </ion-view>
           </ion-slide>      
         </ion-slide-box>
 
-<div class="bar bar-footer bar-assertive transparent_bg" style="height:50px;border:none;background: transparent; color:green; !important">
+<div class="bar bar-header bar-assertive" style="height:37px;border:none;background: white; color:green; !important">
 
   <div class="tab-item" ng-click="sharenews(currentGlance[clickedIndex])">
     	<!-- <i  class="icon ion-share icon-common green font-25" ></i> -->	

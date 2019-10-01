@@ -97,6 +97,11 @@
 
                   <ion-view>                   
                     <ion-content  style="background-color: white;"  overflow-scroll="true" has-bouncing="true" class="animated slideInRight delay-2s">
+                    <div ng-if="!isSwifeSeenHome" style="margin:20px"> 
+                  <span style="padding-left: 25px; font-size: 10px"> Swipe To Read Next </span>
+                  <img src="img/swipe.gif" alt="swipe" style="width:100px"/>
+                  <span ng-click="seen()" style="font-weight:500; color:green">OK </span>
+  </div>  
 
       
   <div class="custom-column" >  
@@ -118,7 +123,7 @@
             <div class="image-divider" ng-click="viewnews(entry.link, entry, $index)">
            
                 <!-- <a href="/#/news"> -->
-                <img ng-src="{{entry.img || entry.enclosure._attributes.url  || entry.image._text }}" on-error-src="img/loading.gif" style="width: 100%; min-height: 150px; border-radius: 3px !important;"/>
+                <img ng-src="{{entry.img || entry.enclosure._attributes.url  || entry.image._text || entry.image._cdata}}" on-error-src="img/loading.gif" style="width: 100%; min-height: 150px; border-radius: 3px !important;"/>
                 <!-- </a> -->
             </div>
             <div class="font-medium text-align-left  text-limit-4" ng-click="viewnews(entry.link, entry)">
@@ -256,9 +261,9 @@
    <ion-item   class="load-more">
    
     <span ng-click="loadMore()" ng-if="pageCount * 15 <= data[currentIndex].length"> Load More Updates</span>
-    <span ng-if="pageCount*15 >= data[currentIndex].length"> No more data stay tunned
+    <span ng-if="pageCount*15 >= data[currentIndex].length"> Stay tunned
         <div style="margin-top: 50px">
-            <img src="https://qrs.in/frontent/images/noresult.png" style="width: 70%" />
+            
         </div>
     </span>
 <!--  {{ pageCount*20 <= data[currentIndex].length ? 'Load More Updates' : 'No more data stay tunned'}}   -->

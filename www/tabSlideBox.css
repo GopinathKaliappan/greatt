@@ -587,6 +587,9 @@ p img
   color:black !important;
   background-color: white !important;
 }
+.glance-area .scroll{
+    height: 130% !important;
+}
 .glance-area .scroll-content {
   height: 100% !important;
 }
@@ -893,7 +896,6 @@ height: 100%;
   bottom: 0;
   width: 100px;
   border-radius: 7px;
-  border-right: 3px solid #a52a2a;
   border-bottom: 3px solid #ffc0cb;
   height: 100%;
 }
