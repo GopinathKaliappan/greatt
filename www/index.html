@@ -243,7 +243,7 @@
 </div>
 <div class="container" ng-repeat="t in tabListing track by $index" class="item text-left channel-card" style="padding: 0px 4px !important;">
 
-  <div class="content" ng-click="toggleItems(t.id, isPresent(t.id), t)" style="border-radius: 5px;">
+  <div class="content" ng-click="toggleItems(t.id, isPresent(t.id), t)" style="border-radius: 5px;">  <div class="content" ng-click="toggleItems(t.id, isPresent(t.id), t,$index)" style="border-radius: 5px;">
     <i ng-if="isPresent(t.id)" class ="icon ion-checkmark-circled green tick-icon"></i><i ng-if="!isPresent(t.id)" class ="icon ion-checkmark-circled tick-icon"></i>
     <a>
       <div class="content-overlay"></div>
