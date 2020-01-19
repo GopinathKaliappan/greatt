@@ -932,7 +932,7 @@ $ionicPlatform.ready(function() {
 
 
    $scope.toggleItems = (id, status, item, i) => {
-    alert(i)
+    // alert(i)
         if(i!= undefined){
           $scope.currentTab = i;
         } else{
@@ -1016,7 +1016,7 @@ $ionicPlatform.ready(function() {
              $scope.tabs = JSON.parse(window.localStorage.getItem('tabs'));
 
              $scope.currentTab = $scope.tabs.length > 2 ? 2 : 0;
-        
+              // alert()
       }  
             $scope.currentColor = $scope.colors[0];
             

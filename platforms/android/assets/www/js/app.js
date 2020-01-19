@@ -866,19 +866,19 @@ $ionicPlatform.ready(function() {
         category: 'lifestyle',
         id: 1001
       },
-      {
-        name: 'News Live',
-        url: 'https://tamil.samayam.com/',
-        icon: '',
-        color: 'green',
-        channelImage: 'https://tamil.samayam.com/photo/66586409.cms',
-        text: 'white',
-        type: 'menu' ,
-        channel: 'News18',
-        language:'tamil',
-        category: 'lifestyle',
-        id: 1000
-      }
+      // {
+      //   name: 'News Live',
+      //   url: 'https://tamil.samayam.com/',
+      //   icon: '',
+      //   color: 'green',
+      //   channelImage: 'https://tamil.samayam.com/photo/66586409.cms',
+      //   text: 'white',
+      //   type: 'menu' ,
+      //   channel: 'News18',
+      //   language:'tamil',
+      //   category: 'lifestyle',
+      //   id: 1000
+      // }
 
   ];
 
@@ -931,12 +931,18 @@ $ionicPlatform.ready(function() {
   }
 
 
-   $scope.toggleItems = (id, status, item) => {
+   $scope.toggleItems = (id, status, item, i) => {
+    alert(i)
+        if(i!= undefined){
+          $scope.currentTab = i;
+        } else{
+          $scope.currentTab = 2;
+        }
         if(!status) {
           
           $scope.tabs.splice(2,0,item);
           window.localStorage.setItem('tabs', JSON.stringify($scope.tabs));
-          $scope.currentTab = 2;
+          
             
         let count = Number(window.localStorage.getItem('totoalAdded'));  
         if(!window.localStorage.getItem('appRated') && count > 3)  {
@@ -973,6 +979,23 @@ $ionicPlatform.ready(function() {
               $scope.$apply( () => {
                               imageLoader(response);
                               $scope.tabListing = response;
+                              $scope.tabs= [];
+                              $scope.tabs.push(     {
+                                name: 'Add Channels',
+                                url: 'https://tamil.samayam.com/',
+                                icon: '',
+                                color: 'green',
+                                channelImage: 'https://tamil.samayam.com/photo/66586409.cms',
+                                text: 'white',
+                                type: 'menu' ,
+                                channel: 'News18',
+                                language:'tamil',
+                                category: 'lifestyle',
+                                id: 1001
+                              });
+                              response.map(data=> $scope.tabs.push(data));
+                              // $scope.tabs   
+                              // $scope.tabs = { ...$scope.tabs,...response};
                               $scope.languages = $scope.tabListing[0].languages; 
                               
              })   
@@ -993,7 +1016,7 @@ $ionicPlatform.ready(function() {
              $scope.tabs = JSON.parse(window.localStorage.getItem('tabs'));
 
              $scope.currentTab = $scope.tabs.length > 2 ? 2 : 0;
-        
+              // alert()
       }  
             $scope.currentColor = $scope.colors[0];
             
